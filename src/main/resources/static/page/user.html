@@ -1,0 +1,237 @@
+<!doctype html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+<!--begin::Head-->
+<head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+      <title>AdminLTE v4 | User</title>
+
+      <!--begin::Accessibility Meta Tags-->
+      <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes"/>
+      <meta name="color-scheme" content="light dark"/>
+      <meta name="theme-color" content="#007bff" media="(prefers-color-scheme: light)"/>
+      <meta name="theme-color" content="#1a1a1a" media="(prefers-color-scheme: dark)"/>
+      <!--end::Accessibility Meta Tags-->
+
+      <!--begin::Primary Meta Tags-->
+      <meta name="title" content="AdminLTE v4 | User"/>
+      <meta name="author" content="ColorlibHQ"/>
+      <meta
+              name="description"
+              content="AdminLTE is a Free Bootstrap 5 Admin Dashboard, 30 example pages using Vanilla JS. Fully accessible with WCAG 2.1 AA compliance."
+      />
+      <meta
+              name="keywords"
+              content="bootstrap 5, bootstrap, bootstrap 5 admin dashboard, bootstrap 5 dashboard, bootstrap 5 charts, bootstrap 5 calendar, bootstrap 5 datepicker, bootstrap 5 tables, bootstrap 5 datatable, vanilla js datatable, colorlibhq, colorlibhq dashboard, colorlibhq admin dashboard, accessible admin panel, WCAG compliant"
+      />
+
+      <meta name="supported-color-schemes" content="light dark"/>
+      <link rel="preload" href="../css/adminlte.css" as="style"/>
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/source-sans-3@5.0.12/index.css"
+            integrity="sha256-tXJfXfp6Ewt1ilPzLDtQnJV4hclT9XuaZUKyUvmyr+Q=" crossorigin="anonymous" media="print"/>
+      <link rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/overlayscrollbars@2.11.0/styles/overlayscrollbars.min.css"
+            crossorigin="anonymous"/>
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css"
+            crossorigin="anonymous"/>
+      <link rel="stylesheet" href="../css/adminlte.css"/>
+
+</head>
+
+<body class="layout-fixed sidebar-expand-lg bg-body-tertiary" style="opacity: 0; transition: opacity 0.3s ease-in-out;">
+
+<div class="app-wrapper">
+      <div id="header-container"></div>
+      <div id="sidebar-container"></div>
+      <div id="toast-container-placeholder"></div>
+
+      <main class="app-main">
+            <!--begin::App Content Header-->
+            <div class="app-content-header">
+                  <!--begin::Container-->
+                  <div class="container-fluid">
+                        <div class="card mb-4" id="user-list-card">
+                              <div class="card-header">
+                                    <h3 class="card-title" style="font-weight: bold;">User</h3>
+                                    <div class="card-tools d-flex">
+                                          <div class="input-group input-group-sm" style="width: 150px;">
+                                                <input type="text" id="table-search" class="form-control float-right"
+                                                       placeholder="Search">
+                                                <div class="input-group-append">
+                                                      <button type="submit" class="btn btn-default">
+                                                            <i class="bi bi-search"></i>
+                                                      </button>
+                                                </div>
+                                          </div>
+                                          <div class="input-group-sm" style="width: auto;">
+                                                <button type="button" class="btn btn-primary btn-sm" onclick="showForm(true)">
+                                                      <i class="bi bi-plus"></i> Add
+                                                </button>
+                                          </div>
+                                    </div>
+                              </div>
+
+                              <div class="card-body p-0">
+                                    <table class="table table-striped">
+                                          <thead>
+                                          <tr>
+                                                <th>Name</th>
+                                                <th>Username</th>
+                                                <th>Contact No</th>
+                                                <th>Email</th>
+                                                <th>Role</th>
+                                                <th>Status</th>
+                                                <th>Action</th>
+                                          </tr>
+                                          </thead>
+                                          <tbody id="user-table-body">
+                                          <!-- Data will be populated here -->
+                                          </tbody>
+                                    </table>
+                              </div>
+                              <!-- /.card-body -->
+                              <div class="card-footer clearfix">
+                                    <ul class="pagination pagination-sm m-0 float-right" id="pagination">
+                                          <!-- Pagination links will be populated here -->
+                                    </ul>
+                              </div>
+                        </div>
+
+                        <!-- User Form Card (Hidden by default) -->
+                        <div class="card mb-4" id="user-form-card" style="display: none;">
+                              <div class="card-header">
+                                    <h3 class="card-title" id="form-title">User Details</h3>
+                                    <div class="card-tools">
+                                          <button type="button" class="btn btn-tool" onclick="showList()">
+                                                <i class="bi bi-x-lg"></i>
+                                          </button>
+                                    </div>
+                              </div>
+                              <div class="card-body">
+                                    <form id="user-form">
+                                          <input type="hidden" id="userId">
+                                          <div class="row">
+                                                <div class="col-md-6 mb-3">
+                                                      <label for="name" class="form-label">Name</label>
+                                                      <input type="text" class="form-control" id="name" required>
+                                                </div>
+                                                <div class="col-md-6 mb-3">
+                                                      <label for="username" class="form-label">Username</label>
+                                                      <input type="text" class="form-control" id="username" required>
+                                                </div>
+                                          </div>
+                                          <div class="row">
+                                                <div class="col-md-6 mb-3">
+                                                      <label for="password" class="form-label">Password</label>
+                                                      <input type="password" class="form-control" id="password"
+                                                             required>
+                                                </div>
+                                                <div class="col-md-6 mb-3">
+                                                      <label for="contactNo" class="form-label">Contact No</label>
+                                                      <input type="text" class="form-control" id="contactNo" required>
+                                                </div>
+                                          </div>
+                                          <div class="row">
+                                                <div class="col-md-6 mb-3">
+                                                      <label for="email" class="form-label">Email</label>
+                                                      <input type="email" class="form-control" id="email" required>
+                                                </div>
+                                                <div class="col-md-6 mb-3">
+                                                      <label for="dateOfBirth" class="form-label">Date of Birth</label>
+                                                      <input type="date" class="form-control" id="dateOfBirth" required>
+                                                </div>
+                                          </div>
+                                          <div class="row">
+                                                <div class="col-md-6 mb-3">
+                                                      <label for="gender" class="form-label">Gender</label>
+                                                      <select class="form-select" id="gender" required>
+                                                            <option value="MALE">MALE</option>
+                                                            <option value="FEMALE">FEMALE</option>
+                                                      </select>
+                                                </div>
+                                                <div class="col-md-6 mb-3">
+                                                      <label for="role" class="form-label">Role</label>
+                                                      <select class="form-select" id="role">
+                                                            <option value="ADMIN">ADMIN</option>
+                                                            <option value="USER">USER</option>
+                                                      </select>
+                                                </div>
+                                          </div>
+                                          <div class="row">
+                                                <div class="col-md-6 mb-3">
+                                                      <label for="height" class="form-label">Height</label>
+                                                      <div class="input-group">
+                                                            <input type="number" step="0.01" class="form-control"
+                                                                   id="height">
+                                                            <select class="form-select" id="heightUomId"
+                                                                    style="max-width: 100px;">
+                                                                  <!-- Options populated via JS -->
+                                                            </select>
+                                                            <input type="text" class="form-control" id="heightUomValue"
+                                                                   readonly style="display: none; max-width: 100px;">
+                                                      </div>
+                                                </div>
+                                                <div class="col-md-6 mb-3">
+                                                      <label for="weight" class="form-label">Weight</label>
+                                                      <div class="input-group">
+                                                            <input type="number" step="0.01" class="form-control"
+                                                                   id="weight">
+                                                            <select class="form-select" id="weightUomId"
+                                                                    style="max-width: 100px;">
+                                                                  <!-- Options populated via JS -->
+                                                            </select>
+                                                            <input type="text" class="form-control" id="weightUomValue"
+                                                                   readonly style="display: none; max-width: 100px;">
+                                                      </div>
+                                                </div>
+                                          </div>
+                                          <div class="row">
+                                                <div class="col-md-6 mb-3">
+                                                      <label for="status" class="form-label">Status</label>
+                                                      <select class="form-select" id="status">
+                                                            <option value="ACTIVE">ACTIVE</option>
+                                                            <option value="INACTIVE">INACTIVE</option>
+                                                      </select>
+                                                </div>
+                                          </div>
+                                          <div class="d-flex justify-content-end">
+                                                <button type="button" class="btn btn-secondary me-2"
+                                                        onclick="showList()">Cancel
+                                                </button>
+                                                <button type="submit" class="btn btn-primary" id="save-btn">Save
+                                                </button>
+                                          </div>
+                                    </form>
+                              </div>
+                        </div>
+                  </div>
+
+            </div>
+
+            <div class="app-content">
+                  <!--begin::Container-->
+                  <div class="container-fluid">
+                        <!--begin::Row-->
+                        <div class="row">
+
+                        </div>
+                  </div>
+                  <!--end::Container-->
+            </div>
+            <!--end::App Content-->
+      </main>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/overlayscrollbars@2.11.0/browser/overlayscrollbars.browser.es6.min.js"
+        crossorigin="anonymous">
+</script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.min.js" crossorigin="anonymous"></script>
+<script src="../js/storage.js"></script>
+<script src="../js/common.js"></script>
+<script src="../js/api.js"></script>
+<script src="../js/user.js"></script>
+</body>
+<!--end::Body-->
+</html>

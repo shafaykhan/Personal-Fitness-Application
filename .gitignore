@@ -1,0 +1,41 @@
+# Maven
+HELP.md
+/target/
+!.mvn/wrapper/maven-wrapper.jar
+
+# Maven wrapper files (optional – most teams commit them)
+.mvn/wrapper/maven-wrapper.properties
+mvnw
+mvnw.cmd
+
+# STS / Eclipse / Spring Tools
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+
+# IntelliJ IDEA
+.idea/
+*.iws
+*.iml
+*.ipr
+
+# NetBeans
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+/build/
+
+# VS Code
+.vscode/
+
+# Common temporary / log files
+*.log
+logs/
+.DS_Store
+Thumbs.db

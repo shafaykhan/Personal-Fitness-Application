@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+<head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+      <title>AdminLTE v4 | User Preference</title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes"/>
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css"
+            crossorigin="anonymous"/>
+      <link rel="stylesheet" href="/fitness-app/css/adminlte.css"/>
+</head>
+<body class="layout-fixed sidebar-expand-lg bg-body-tertiary">
+<div class="app-wrapper">
+      <div id="header-container"></div>
+      <div id="sidebar-container"></div>
+      <div id="toast-container-placeholder"></div>
+      <main class="app-main">
+            <div class="app-content-header">
+                  <div class="container-fluid">
+                        <div class="card mb-4" id="user-preference-form-card">
+                              <div class="card-header">
+                                    <h3 class="card-title">User Preference</h3>
+                              </div>
+                              <div class="card-body">
+                                    <form id="user-preference-form">
+                                          <input type="hidden" id="preferenceId">
+                                          <input type="hidden" id="userId">
+                                          <div class="row">
+                                                <div class="col-md-6 mb-3">
+                                                      <label for="diet-type" class="form-label">Diet Type</label>
+                                                      <select class="form-select" id="diet-type"
+                                                              name="dietTypeId"></select>
+                                                </div>
+                                                <div class="col-md-6 mb-3">
+                                                      <label for="workout-intensity" class="form-label">Workout
+                                                            Intensity</label>
+                                                      <select class="form-select" id="workout-intensity"
+                                                              name="intensityId"></select>
+                                                </div>
+                                          </div>
+                                          <div class="row">
+                                                <div class="col-md-6 mb-3">
+                                                      <label for="goal-type" class="form-label">Goal Type</label>
+                                                      <select class="form-select" id="goal-type"
+                                                              name="goalTypeId"></select>
+                                                </div>
+                                                <div class="col-md-6 mb-3">
+                                                      <label for="allergies" class="form-label">Allergies</label>
+                                                      <textarea class="form-control" id="allergies" name="allergies"
+                                                                rows="3"
+                                                                placeholder="e.g., Peanuts, Shellfish"></textarea>
+                                                </div>
+                                          </div>
+                                          <div class="d-flex justify-content-end">
+                                                <button type="submit" class="btn btn-primary" id="save-button">Save
+                                                      Changes
+                                                </button>
+                                          </div>
+                                    </form>
+                              </div>
+                        </div>
+                  </div>
+            </div>
+      </main>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.min.js" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script><script src="../js/api.js"></script>
+<script src="../js/storage.js"></script>
+<script src="../js/common.js"></script>
+<script src="../js/user_preference.js"></script>
+</body>
+</html>
