@@ -1,6 +1,5 @@
 package com.example.fitness_application.common.config;
 
-import com.example.fitness_application.identity.user.User;
 import com.example.fitness_application.identity.user.dto.UserDTO;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.domain.AuditorAware;
