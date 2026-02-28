@@ -15,13 +15,31 @@ async function loadComponent(elementId, filePath) {
       }
 }
 
+function applySidebarAccessControl() {
+      const userDetails = getUserDetails();
+      const isAdmin = userDetails && userDetails.role === 'ADMIN';
+
+      const identityHeader = document.getElementById('sidebar-header-identity');
+      const userItem = document.getElementById('sidebar-item-user');
+      const lookupItem = document.getElementById('sidebar-item-lookup');
+
+      if (identityHeader) {
+            identityHeader.style.display = isAdmin ? '' : 'none';
+      }
+      if (userItem) {
+            userItem.style.display = isAdmin ? '' : 'none';
+      }
+      if (lookupItem) {
+            lookupItem.style.display = isAdmin ? '' : 'none';
+      }
+}
+
 function populateUserDropdown() {
       const user = getUserDetails();
       if (!user) return;
 
       document.querySelectorAll('.login-user-name')
           .forEach(el => el.textContent = user.name || 'User');
-   //   document.querySelector('.login-user-name').textContent = user.name || 'User';
       document.getElementById('login-user-username').textContent = `@${user.username || ''}`;
       document.getElementById('login-user-contact').textContent = user.contactNo || '-';
       const emailEl = document.getElementById('login-user-email');
@@ -39,7 +57,8 @@ async function initializeApp() {
             loadComponent("toast-container-placeholder", "/fitness-app/page/component/toast.html")
       ]);
 
-
+      // Apply sidebar access control after sidebar is loaded
+      applySidebarAccessControl();
       populateUserDropdown();
 
       const script = document.createElement('script');

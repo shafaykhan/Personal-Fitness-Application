@@ -51,7 +51,6 @@ public class SecurityConfiguration {
     http.csrf(AbstractHttpConfigurer::disable)
             .cors(cors -> cors.configurationSource(corsConfigurationSource()))
             .authorizeHttpRequests(auth -> auth
-                    // Public pages
                     .requestMatchers("/page/**", "/css/**", "/js/**", "/img/**", "/component/**",
                             "/favicon.ico").permitAll()
                     .requestMatchers("/auth/login").permitAll()

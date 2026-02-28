@@ -25,8 +25,8 @@ public class AiRecommendationController {
   }
 
   @PostMapping
-  public ResponseEntity<AiRecommendationDTO> saveOrUpdate(@RequestBody @Valid AiRecommendationDTO payloadDTO) {
-    return ResponseEntity.ok(service.saveOrUpdate(payloadDTO));
+  public ResponseEntity<AiRecommendationDTO> generateAndSave(@RequestBody @Valid AiRecommendationDTO payloadDTO) {
+    return ResponseEntity.ok(service.generateAndSave(payloadDTO));
   }
 
   @GetMapping("/by-user/{userId}")

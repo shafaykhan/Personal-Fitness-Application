@@ -32,10 +32,7 @@ VALUES ('HEIGHT_UOM', 'CM'),
        ('MEAL_TYPE', 'SNACK'),
        ('DIET_TYPE', 'VEG'),
        ('DIET_TYPE', 'NON VEG'),
-       ('DIET_TYPE', 'KETO'),
-       ('AI_RECOMMENDATION_TYPE', 'DIET'),
-       ('AI_RECOMMENDATION_TYPE', 'WORKOUT'),
-       ('AI_RECOMMENDATION_TYPE', 'LIFESTYLE');
+       ('DIET_TYPE', 'KETO');
 
 -- WORKOUT
 -- Note: IDs for foreign keys are inferred based on the sequential insertion order in the lookup table above.

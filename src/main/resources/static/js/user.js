@@ -5,8 +5,16 @@ if (!getToken()) {
 let allUsers = [];
 let currentPage = 1;
 const rowsPerPage = 10;
+const loggedInUser = getUserDetails();
+const isAdmin = loggedInUser && loggedInUser.role === 'ADMIN';
 
 async function loadUsers() {
+    if (!isAdmin) {
+        document.getElementById('user-list-card').style.display = 'none';
+        document.getElementById('unauthorized-message-card').style.display = 'block';
+        return;
+    }
+
     try {
         allUsers = await apiGet('/fitness-app/api/users');
         renderTable(allUsers, currentPage);
@@ -14,6 +22,7 @@ async function loadUsers() {
         setupSearch();
     } catch (error) {
         console.error("Error loading users:", error);
+        showToast("Error loading users.", "error");
     }
 }
 
@@ -80,6 +89,11 @@ function renderTable(users, page) {
     const tableBody = document.getElementById('user-table-body');
     tableBody.innerHTML = '';
 
+    if (!users || users.length === 0) {
+        tableBody.innerHTML = '<tr><td colspan="7" class="text-center">No users found</td></tr>';
+        return;
+    }
+
     const start = (page - 1) * rowsPerPage;
     const end = start + rowsPerPage;
     const paginatedUsers = users.slice(start, end);
@@ -107,8 +121,9 @@ function renderTable(users, page) {
 function setupPagination(users) {
     const paginationElement = document.getElementById('pagination');
     paginationElement.innerHTML = '';
-    const pageCount = Math.ceil(users.length / rowsPerPage);
+    if (!users || users.length === 0) return;
 
+    const pageCount = Math.ceil(users.length / rowsPerPage);
     for (let i = 1; i <= pageCount; i++) {
         const li = document.createElement('li');
         li.className = `page-item ${i === currentPage ? 'active' : ''}`;
@@ -139,7 +154,7 @@ function populateForm(user, isReadOnly) {
     document.getElementById('userId').value = user.id;
     document.getElementById('name').value = user.name;
     document.getElementById('username').value = user.username;
-    document.getElementById('password').value = user.password;
+    document.getElementById('password').value = ''; // Clear password for security
     document.getElementById('contactNo').value = user.contactNo;
     document.getElementById('email').value = user.email;
     document.getElementById('dateOfBirth').value = user.dateOfBirth;
@@ -155,6 +170,12 @@ function populateForm(user, isReadOnly) {
     
     ensureOption('weightUomId', user.weightUomId, user.weightUomValue);
     document.getElementById('weightUomId').value = user.weightUomId || '';
+
+    // Hide role field for non-admin users
+    const formGroupRole = document.getElementById('form-group-role');
+    if (formGroupRole) {
+        formGroupRole.style.display = isAdmin ? '' : 'none';
+    }
 
     const formElements = document.getElementById('user-form').elements;
     for (let i = 0; i < formElements.length; i++) {
@@ -185,11 +206,13 @@ function ensureOption(selectId, value, text) {
 function showList() {
     document.getElementById('user-list-card').style.display = 'block';
     document.getElementById('user-form-card').style.display = 'none';
+    document.getElementById('unauthorized-message-card').style.display = 'none'; // Hide unauthorized message
 }
 
 function showForm(isAdd = false) {
     document.getElementById('user-list-card').style.display = 'none';
     document.getElementById('user-form-card').style.display = 'block';
+    document.getElementById('unauthorized-message-card').style.display = 'none'; // Hide unauthorized message
 
     if (isAdd) {
         document.getElementById('user-form').reset();

@@ -160,6 +160,8 @@ function populateForm(goal, isReadOnly) {
     }
     document.querySelector('#goal-form button[type="submit"]').style.display = isReadOnly ? 'none' : 'block';
     document.getElementById('form-title').innerText = isReadOnly ? 'View Goal' : (goal.id ? 'Edit Goal' : 'Add Goal');
+
+    validateGoalForm(); // Initial validation check
 }
 
 function showList() {
@@ -181,6 +183,7 @@ function showForm(isAdd = false) {
         }
         document.querySelector('#goal-form button[type="submit"]').style.display = 'block';
     }
+    validateGoalForm(); // Initial validation check when showing form
 }
 
 async function loadLookupData() {
@@ -209,8 +212,30 @@ function populateSelect(selectId, items) {
     }
 }
 
+function validateGoalForm() {
+    const typeId = document.getElementById('typeId').value;
+    const targetValue = document.getElementById('targetValue').value;
+    const currentValue = document.getElementById('currentValue').value;
+    const startDate = document.getElementById('startDate').value;
+    const recordDateTime = document.getElementById('recordDateTime').value;
+    const status = document.getElementById('status').value; // Status always has a value
+
+    const isValid = typeId && targetValue && currentValue && startDate && recordDateTime && status;
+    document.getElementById('save-btn').disabled = !isValid;
+    return isValid;
+}
+
+document.getElementById('goal-form').addEventListener('input', validateGoalForm);
+document.getElementById('goal-form').addEventListener('change', validateGoalForm);
+
+
 document.getElementById('goal-form').addEventListener('submit', async function (event) {
     event.preventDefault();
+    if (!validateGoalForm()) {
+        showToast("Please fill in all required fields.", "warning");
+        return;
+    }
+
     const user = getUserDetails();
     const goal = {
         id: document.getElementById('goalId').value || null,
@@ -232,7 +257,7 @@ document.getElementById('goal-form').addEventListener('submit', async function (
         loadGoals();
     } catch (error) {
         console.error('Error saving goal:', error);
-        showToast('Error saving goal', 'error');
+        showToast(error.message, 'error');
     }
 });
 

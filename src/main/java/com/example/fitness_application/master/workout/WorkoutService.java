@@ -19,11 +19,13 @@ import java.util.stream.Collectors;
 @Transactional
 public class WorkoutService {
 
-  private final com.example.fitness_application.master.workout.WorkoutRepository repository;
+  private final WorkoutRepository repository;
   private final LookupService lookupService;
   private final ModelMapper modelMapper;
 
-  public WorkoutService(WorkoutRepository repository, LookupService lookupService, ModelMapper modelMapper) {
+  public WorkoutService(WorkoutRepository repository,
+                        LookupService lookupService,
+                        ModelMapper modelMapper) {
     this.repository = repository;
     this.lookupService = lookupService;
     this.modelMapper = modelMapper;
@@ -65,7 +67,7 @@ public class WorkoutService {
     repository.save(entity);
   }
 
-  public void addValues(List<WorkoutDTO> dtoList) {
+  private void addValues(List<WorkoutDTO> dtoList) {
     if (dtoList.isEmpty()) return;
 
     Set<Long> lookupIds = dtoList.stream().map(dto -> new Long[]{dto.getTypeId(), dto.getDurationUomId(), dto.getIntensityId()}).flatMap(Arrays::stream).filter(Objects::nonNull).collect(Collectors.toSet());
@@ -77,44 +79,6 @@ public class WorkoutService {
       dto.setDurationUomValue(lookupIdAndValueMap.get(dto.getDurationUomId()));
       dto.setIntensityValue(lookupIdAndValueMap.get(dto.getIntensityId()));
     });
-  }
-
-  private String buildWorkout(Long id) {
-    WorkoutDTO dto = findById(id);
-    return """
-            You are a certified fitness trainer.
-            
-            Analyze the following workout record
-            and give improvement suggestions.
-            
-            Respond only in valid JSON.
-            No extra explanation.
-            
-            Workout Details:
-            Exercise: %s
-            Type: %s
-            Duration: %d %s
-            Intensity: %s
-            Calories Burned: %s
-            Notes: %s
-            Date: %s
-            
-            Return in this format:
-            {
-              "analysis": "",
-              "caloriesEvaluation": "",
-              "improvements": [],
-              "nextWorkoutSuggestion": "",
-              "safetyTip": ""
-            }
-            """.formatted(dto.getExerciseName(),
-            dto.getTypeValue(),
-            dto.getDuration(),
-            dto.getDurationUomValue(),
-            dto.getIntensityValue(),
-            dto.getCaloriesBurned(),
-            dto.getNotes(),
-            dto.getRecordDateTime());
   }
 
   private Workout findEntityById(Long id) {

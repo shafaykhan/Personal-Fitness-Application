@@ -3,6 +3,7 @@ package com.example.fitness_application.master.health_record;
 import com.example.fitness_application.common.enums.Status;
 import com.example.fitness_application.common.exception.custom.NotFoundException;
 import com.example.fitness_application.master.health_record.dto.HealthRecordDTO;
+import com.example.fitness_application.master.user_preference.UserPreferenceService;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,10 +15,14 @@ import java.util.List;
 public class HealthRecordService {
 
   private final HealthRecordRepository repository;
+  private final UserPreferenceService userPreferenceService;
   private final ModelMapper modelMapper;
 
-  public HealthRecordService(HealthRecordRepository repository, ModelMapper modelMapper) {
+  public HealthRecordService(HealthRecordRepository repository,
+                             UserPreferenceService userPreferenceService,
+                             ModelMapper modelMapper) {
     this.repository = repository;
+    this.userPreferenceService = userPreferenceService;
     this.modelMapper = modelMapper;
   }
 

@@ -1,7 +1,7 @@
 package com.example.fitness_application.master.ai_recommendation.dto;
 
+import com.example.fitness_application.common.enums.RecommendationEnum;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -22,13 +22,13 @@ public class AiRecommendationDTO {
   @NotNull
   private Long userId;
   @NotNull
-  private Long typeId;
+  private Long dataId;
+  @NotNull
+  private RecommendationEnum recommendation;
 
-  @NotBlank
   private String content;
 
-  @NotNull
-  private LocalDateTime recordDateTime;
+  private LocalDateTime generatedAt;
 
   private String typeValue;
 }

@@ -188,17 +188,17 @@ DROP TABLE IF EXISTS ai_recommendation;
 CREATE TABLE ai_recommendation
 (
       id               INT PRIMARY KEY AUTO_INCREMENT,
-      user_id          INT        NOT NULL,
-      type_id          INT        NOT NULL,
-      content          MEDIUMTEXT NOT NULL,
-      record_date_time TIMESTAMP  NOT NULL DEFAULT CURRENT_TIMESTAMP,
-      record_status    BIT(1)     NOT NULL DEFAULT TRUE,
-      created_by       INT        NULL,
-      created_at       TIMESTAMP  NULL,
-      last_modified_by INT        NULL,
-      last_modified_at TIMESTAMP  NULL,
+      user_id          INT                                        NOT NULL,
+      data_id          INT                                        NOT NULL,
+      recommendation   ENUM ('WORKOUT', 'HEALTH', 'DIET', 'GOAL') NOT NULL,
+      content          JSON                                       NOT NULL,
+      generated_at     TIMESTAMP                                  NOT NULL DEFAULT CURRENT_TIMESTAMP,
+      record_status    BIT(1)                                     NOT NULL DEFAULT TRUE,
+      created_by       INT                                        NULL,
+      created_at       TIMESTAMP                                  NULL,
+      last_modified_by INT                                        NULL,
+      last_modified_at TIMESTAMP                                  NULL,
       CONSTRAINT ai_recommendation_user_id_fk FOREIGN KEY (user_id) references user (id),
-      CONSTRAINT ai_recommendation_type_id_fk FOREIGN KEY (type_id) references lookup (id),
       CONSTRAINT ai_recommendation_created_by_fk FOREIGN KEY (created_by) references user (id),
       CONSTRAINT ai_recommendation_last_modified_by_fk FOREIGN KEY (last_modified_by) references user (id)
 );

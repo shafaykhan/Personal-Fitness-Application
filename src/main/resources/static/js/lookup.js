@@ -5,22 +5,32 @@ if (!getToken()) {
 let allLookups = [];
 let currentPage = 1;
 const rowsPerPage = 10;
+const loggedInUser = getUserDetails();
+const isAdmin = loggedInUser && loggedInUser.role === 'ADMIN';
 
 async function loadLookups() {
+      if (!isAdmin) {
+            document.getElementById('lookup-list-card').style.display = 'none';
+            document.getElementById('unauthorized-message-card').style.display = 'block';
+            return;
+      }
+
       try {
             allLookups = await apiGet('/fitness-app/api/lookups');
             renderTable(allLookups, currentPage);
             setupPagination(allLookups);
             setupSearch();
-
-      } catch {
+      } catch (error) {
+            console.error("Error loading lookups:", error);
+            showToast("Error loading lookups.", "error");
       }
 }
 
 async function fetchLookup(id) {
       try {
             return await apiGet(`/fitness-app/api/lookups/${id}`);
-      } catch {
+      } catch (error) {
+            console.error(`Error fetching lookup ${id}:`, error);
             return null;
       }
 }
@@ -49,6 +59,11 @@ function renderTable(lookups, page) {
       const tableBody = document.getElementById('lookup-table-body');
       tableBody.innerHTML = '';
 
+      if (!lookups || lookups.length === 0) {
+            tableBody.innerHTML = '<tr><td colspan="4" class="text-center">No lookups found</td></tr>';
+            return;
+      }
+
       const start = (page - 1) * rowsPerPage;
       const end = start + rowsPerPage;
       const paginatedLookups = lookups.slice(start, end);
@@ -69,12 +84,8 @@ function renderTable(lookups, page) {
             <td>${lookup.value}</td>
             <td>${statusBadge}</td>
             <td>
-                <button class="btn btn-sm btn-primary" onclick="editLookup(${lookup.id})">
-                    <i class="bi bi-pencil"></i>
-                </button>
-                <button class="btn btn-sm btn-info" onclick="viewLookup(${lookup.id})">
-                    <i class="bi bi-eye"></i>
-                </button>
+                <button class="btn btn-sm btn-primary" onclick="editLookup(${lookup.id})"><i class="bi bi-pencil"></i></button>
+                <button class="btn btn-sm btn-info" onclick="viewLookup(${lookup.id})"><i class="bi bi-eye"></i></button>
             </td>
         `;
             tableBody.appendChild(row);
@@ -84,8 +95,9 @@ function renderTable(lookups, page) {
 function setupPagination(lookups) {
       const paginationElement = document.getElementById('pagination');
       paginationElement.innerHTML = '';
-      const pageCount = Math.ceil(lookups.length / rowsPerPage);
+      if (!lookups || lookups.length === 0) return;
 
+      const pageCount = Math.ceil(lookups.length / rowsPerPage);
       for (let i = 1; i <= pageCount; i++) {
             const li = document.createElement('li');
             li.classList.add('page-item');
@@ -123,7 +135,6 @@ function setupSearch() {
       });
 }
 
-
 function populateForm(lookup, isReadOnly) {
       document.getElementById('lookupId').value = lookup.id;
       document.getElementById('groupKey').value = lookup.groupKey;
@@ -135,7 +146,6 @@ function populateForm(lookup, isReadOnly) {
             formElements[i].disabled = isReadOnly;
       }
 
-      // Always enable cancel button
       const buttons = document.querySelectorAll('#lookup-form button[type="button"]');
       buttons.forEach(btn => btn.disabled = false);
 
@@ -153,11 +163,13 @@ function populateForm(lookup, isReadOnly) {
 function showList() {
       document.getElementById('lookup-list-card').style.display = 'block';
       document.getElementById('lookup-form-card').style.display = 'none';
+      document.getElementById('unauthorized-message-card').style.display = 'none';
 }
 
 function showForm(isAdd = false) {
       document.getElementById('lookup-list-card').style.display = 'none';
       document.getElementById('lookup-form-card').style.display = 'block';
+      document.getElementById('unauthorized-message-card').style.display = 'none';
 
       const formTitle = document.getElementById('form-title');
       const saveBtn = document.getElementById('save-btn');
@@ -187,10 +199,15 @@ document.getElementById('lookup-form').addEventListener('submit', async function
             status: document.getElementById('status').value,
       };
 
-      await updateLookup(lookup);
-      showToast('Lookup updated successfully', 'success');
-      showList();
-      loadLookups();
+      try {
+            await updateLookup(lookup);
+            showToast('Lookup updated successfully', 'success');
+            showList();
+            loadLookups();
+      } catch (error) {
+            console.error("Error saving lookup:", error);
+            showToast("Error saving lookup", "error");
+      }
 });
 
 document.addEventListener('componentsLoaded', loadLookups);

@@ -12,7 +12,7 @@ import java.util.Map;
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class ErrorResponse {
 
-  private final LocalDateTime timestamp;
+  private final String timestamp;
   private final String statusCode;
   private final int status;
   private final String message;
@@ -24,7 +24,7 @@ public class ErrorResponse {
   }
 
   public ErrorResponse(HttpStatus status, String message, Map<String, String> validationErrors) {
-    this.timestamp = LocalDateTime.now();
+    this.timestamp = String.valueOf(LocalDateTime.now());
     this.statusCode = status.name();
     this.status = status.value();
     this.message = message;

@@ -44,7 +44,7 @@ async function apiRequest(url, options = {}) {
             clearToken();
             clearUserDetails();
             clearUserId();
-            window.location.href = '/login.html';
+            window.location.href = '../page/login.html';
             return; // Stop further execution
         }
 
@@ -63,18 +63,24 @@ async function apiRequest(url, options = {}) {
         let errorMessage = `Request failed with status: ${response.status}`;
         try {
             const errorData = await response.json();
-            errorMessage = errorData.validationErrors ? errorData.validationErrors.join(', ') : (errorData.message || errorMessage);
-        } catch {
-            // Ignore if error response is not JSON
+            if (errorData.validationErrors && typeof errorData.validationErrors === 'object') {
+                // Format validation errors from object to string
+                errorMessage = Object.entries(errorData.validationErrors)
+                    .map(([field, msg]) => `${field}: ${msg}`)
+                    .join(';');
+            } else {
+                errorMessage = errorData.message || errorMessage;
+            }
+        } catch (jsonError) {
+            // If response is not JSON or parsing fails, use generic message
+            console.error("Failed to parse error response JSON:", jsonError);
         }
 
         throw new Error(errorMessage);
 
     } catch (error) {
         console.error('API Error:', error);
-        if (typeof showToast === 'function') {
-            showToast(error.message || 'An unexpected error occurred.', 'danger');
-        }
+        // REMOVED: showToast call from here. The calling function will handle it.
         throw error;
     }
 }
