@@ -5,9 +5,8 @@ document.getElementById("loginForm")?.addEventListener("submit", async (e) => {
 
       const usernameInput = document.getElementById("username");
       const passwordInput = document.getElementById("password");
-      const errorElement = document.getElementById("error");
 
-      if (!usernameInput || !passwordInput || !errorElement) {
+      if (!usernameInput || !passwordInput) {
             console.error("Required elements not found");
             return;
       }
@@ -27,19 +26,19 @@ document.getElementById("loginForm")?.addEventListener("submit", async (e) => {
             if (response.ok) {
                   const data = await response.json();
                   if (data.token) {
+                        showToast("Login successful", 'success');
                         saveToken(data.token);
                         saveUserDetails(data.userDTO);
 
                         window.location.href = "../page/dashboard.html";
                   } else {
-                        errorElement.innerText = "Login successful but no token received.";
+                        showToast("Login successful but no token received!", 'danger');
                   }
             } else {
                   const errorData = await response.json().catch(() => ({}));
-                  errorElement.innerText = errorData.message || "Login failed. Please check your credentials.";
+                  showToast(errorData.message || "Login failed. Please check your credentials!", "danger");
             }
       } catch (error) {
-            console.error("Login error:", error);
-            errorElement.innerText = "An error occurred. Please try again later.";
+            showToast("An error occurred. Please try again later!", 'danger');
       }
 });

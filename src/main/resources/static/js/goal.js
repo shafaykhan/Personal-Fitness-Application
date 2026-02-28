@@ -64,7 +64,7 @@ async function deleteGoal(id) {
             loadGoals();
         } catch (error) {
             console.error(`Error deleting goal ${id}:`, error);
-            showToast("Error deleting goal", "error");
+            showToast("Error deleting goal", "danger");
         }
     }
 }
@@ -75,6 +75,7 @@ function renderTable(goals, page) {
 
     if (!goals || goals.length === 0) {
         tableBody.innerHTML = '<tr><td colspan="9" class="text-center">No goals found</td></tr>';
+        document.getElementById('page-info').innerText = '0 of 0';
         return;
     }
 
@@ -84,6 +85,7 @@ function renderTable(goals, page) {
 
     paginatedGoals.forEach(goal => {
         const row = document.createElement('tr');
+        row.classList.add('align-left');
         const statusBadge = goal.status === 'ACTIVE' ? '<span class="badge text-bg-success">ACTIVE</span>' : `<span class="badge text-bg-danger">${goal.status}</span>`;
         row.innerHTML = `
             <td>${goal.description}</td>
@@ -95,13 +97,35 @@ function renderTable(goals, page) {
             <td>${new Date(goal.recordDateTime).toLocaleString()}</td>
             <td>${statusBadge}</td>
             <td>
-                <button class="btn btn-sm btn-primary" onclick="editGoal(${goal.id})"><i class="bi bi-pencil"></i></button>
-                <button class="btn btn-sm btn-info" onclick="viewGoal(${goal.id})"><i class="bi bi-eye"></i></button>
-                <button class="btn btn-sm btn-danger" onclick="deleteGoal(${goal.id})"><i class="bi bi-trash"></i></button>
+                <div class="d-flex justify-content-center gap-2">
+                    <button class="btn btn-sm btn-light border text-primary rounded-circle"
+                            style="width:36px; height:36px;"
+                            onclick="viewGoal(${goal.id})"
+                            title="View">
+                        <i class="bi bi-eye"></i>
+                    </button>
+                    <button class="btn btn-sm btn-light border text-secondary rounded-circle"
+                            style="width:36px; height:36px;"
+                            onclick="editGoal(${goal.id})"
+                            title="Edit">
+                        <i class="bi bi-pencil"></i>
+                    </button>
+                    <button class="btn btn-sm btn-light border text-danger rounded-circle"
+                            style="width:36px; height:36px;"
+                            onclick="deleteGoal(${goal.id})"
+                            title="Delete">
+                        <i class="bi bi-trash"></i>
+                    </button>
+                </div>
             </td>
         `;
         tableBody.appendChild(row);
     });
+
+    const totalGoals = goals.length;
+    const startRange = start + 1;
+    const endRange = Math.min(end, totalGoals);
+    document.getElementById('page-info').innerText = `${startRange}-${endRange} of ${totalGoals}`;
 }
 
 function setupPagination(goals) {
@@ -118,6 +142,9 @@ function setupPagination(goals) {
             e.preventDefault();
             currentPage = i;
             renderTable(goals, currentPage);
+            // Update active state
+            document.querySelectorAll('.page-item').forEach(item => item.classList.remove('active'));
+            li.classList.add('active');
         });
         paginationElement.appendChild(li);
     }
@@ -257,7 +284,7 @@ document.getElementById('goal-form').addEventListener('submit', async function (
         loadGoals();
     } catch (error) {
         console.error('Error saving goal:', error);
-        showToast(error.message, 'error');
+        showToast(error.message, 'danger');
     }
 });
 

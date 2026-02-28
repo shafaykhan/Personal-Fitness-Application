@@ -50,7 +50,42 @@ function populateUserDropdown() {
 
 }
 
+function setUserProfile() {
+      const user = getUserDetails();
+      if (!user) return;
+
+      let imageSrc = "/fitness-app/img/man.png";
+
+      if (user.gender === "FEMALE") {
+            imageSrc = "/fitness-app/img/woman.png";
+      } else if (user.gender === "MALE") {
+            imageSrc = "/fitness-app/img/man.png";
+      }
+
+      document.querySelectorAll('.user-image')
+          .forEach(el => el.src = imageSrc);
+}
+
 async function initializeApp() {
+      // Check if we are on the login page
+      if (window.location.pathname.includes('login.html')) {
+            await loadComponent("toast-container-placeholder", "/fitness-app/page/component/toast.html");
+            
+            // Initialize toast observer for login page
+            const toastObserver = new MutationObserver((mutations, observer) => {
+                  if (document.getElementById('liveToast')) {
+                        document.dispatchEvent(new Event('componentsLoaded'));
+                        observer.disconnect();
+                  }
+            });
+
+            toastObserver.observe(document.body, {
+                  childList: true,
+                  subtree: true
+            });
+            return;
+      }
+
       await Promise.all([
             loadComponent("header-container", "/fitness-app/page/component/header.html"),
             loadComponent("sidebar-container", "/fitness-app/page/component/sidebar.html"),
@@ -60,6 +95,7 @@ async function initializeApp() {
       // Apply sidebar access control after sidebar is loaded
       applySidebarAccessControl();
       populateUserDropdown();
+      setUserProfile();
 
       const script = document.createElement('script');
       script.src = "/fitness-app/js/adminlte.js";

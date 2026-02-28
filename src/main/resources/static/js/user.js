@@ -22,7 +22,7 @@ async function loadUsers() {
         setupSearch();
     } catch (error) {
         console.error("Error loading users:", error);
-        showToast("Error loading users.", "error");
+        showToast("Error loading users.", "danger");
     }
 }
 
@@ -91,6 +91,7 @@ function renderTable(users, page) {
 
     if (!users || users.length === 0) {
         tableBody.innerHTML = '<tr><td colspan="7" class="text-center">No users found</td></tr>';
+        document.getElementById('page-info').innerText = '0 of 0';
         return;
     }
 
@@ -100,7 +101,7 @@ function renderTable(users, page) {
 
     paginatedUsers.forEach(user => {
         const row = document.createElement('tr');
-        row.classList.add('align-middle');
+        row.classList.add('align-left');
         const statusBadge = user.status === 'ACTIVE' ? '<span class="badge text-bg-success">ACTIVE</span>' : `<span class="badge text-bg-danger">${user.status}</span>`;
         row.innerHTML = `
             <td>${user.name}</td>
@@ -110,12 +111,29 @@ function renderTable(users, page) {
             <td>${user.role}</td>
             <td>${statusBadge}</td>
             <td>
-                <button class="btn btn-sm btn-primary" onclick="editUser(${user.id})"><i class="bi bi-pencil"></i></button>
-                <button class="btn btn-sm btn-info" onclick="viewUser(${user.id})"><i class="bi bi-eye"></i></button>
+                <div class="d-flex justify-content-center gap-2">
+                    <button class="btn btn-sm btn-light border text-primary rounded-circle"
+                            style="width:36px; height:36px;"
+                            onclick="viewUser(${user.id})"
+                            title="View">
+                        <i class="bi bi-eye"></i>
+                    </button>
+                    <button class="btn btn-sm btn-light border text-secondary rounded-circle"
+                            style="width:36px; height:36px;"
+                            onclick="editUser(${user.id})"
+                            title="Edit">
+                        <i class="bi bi-pencil"></i>
+                    </button>
+                </div>
             </td>
         `;
         tableBody.appendChild(row);
     });
+
+    const totalUsers = users.length;
+    const startRange = start + 1;
+    const endRange = Math.min(end, totalUsers);
+    document.getElementById('page-info').innerText = `${startRange}-${endRange} of ${totalUsers}`;
 }
 
 function setupPagination(users) {
@@ -132,6 +150,9 @@ function setupPagination(users) {
             e.preventDefault();
             currentPage = i;
             renderTable(users, currentPage);
+            // Update active state
+            document.querySelectorAll('.page-item').forEach(item => item.classList.remove('active'));
+            li.classList.add('active');
         });
         paginationElement.appendChild(li);
     }
@@ -259,7 +280,7 @@ document.getElementById('user-form').addEventListener('submit', async function (
         }
     } catch (error) {
         console.error('Error saving user:', error);
-        showToast('Error saving user', 'error');
+        showToast('Error saving user', 'danger');
     }
 });
 

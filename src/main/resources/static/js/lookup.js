@@ -22,7 +22,7 @@ async function loadLookups() {
             setupSearch();
       } catch (error) {
             console.error("Error loading lookups:", error);
-            showToast("Error loading lookups.", "error");
+            showToast("Error loading lookups.", "danger");
       }
 }
 
@@ -61,6 +61,7 @@ function renderTable(lookups, page) {
 
       if (!lookups || lookups.length === 0) {
             tableBody.innerHTML = '<tr><td colspan="4" class="text-center">No lookups found</td></tr>';
+            document.getElementById('page-info').innerText = '0 of 0';
             return;
       }
 
@@ -70,7 +71,7 @@ function renderTable(lookups, page) {
 
       paginatedLookups.forEach(lookup => {
             const row = document.createElement('tr');
-            row.classList.add('align-middle');
+            row.classList.add('align-left');
 
             let statusBadge = '';
             if (lookup.status === 'ACTIVE') {
@@ -84,12 +85,29 @@ function renderTable(lookups, page) {
             <td>${lookup.value}</td>
             <td>${statusBadge}</td>
             <td>
-                <button class="btn btn-sm btn-primary" onclick="editLookup(${lookup.id})"><i class="bi bi-pencil"></i></button>
-                <button class="btn btn-sm btn-info" onclick="viewLookup(${lookup.id})"><i class="bi bi-eye"></i></button>
+                <div class="d-flex justify-content-center gap-2">
+                    <button class="btn btn-sm btn-light border text-primary rounded-circle"
+                            style="width:36px; height:36px;"
+                            onclick="viewLookup(${lookup.id})"
+                            title="View">
+                        <i class="bi bi-eye"></i>
+                    </button>
+                    <button class="btn btn-sm btn-light border text-secondary rounded-circle"
+                            style="width:36px; height:36px;"
+                            onclick="editLookup(${lookup.id})"
+                            title="Edit">
+                        <i class="bi bi-pencil"></i>
+                    </button>
+                </div>
             </td>
         `;
             tableBody.appendChild(row);
       });
+
+      const totalLookups = lookups.length;
+      const startRange = start + 1;
+      const endRange = Math.min(end, totalLookups);
+      document.getElementById('page-info').innerText = `${startRange}-${endRange} of ${totalLookups}`;
 }
 
 function setupPagination(lookups) {
@@ -100,22 +118,16 @@ function setupPagination(lookups) {
       const pageCount = Math.ceil(lookups.length / rowsPerPage);
       for (let i = 1; i <= pageCount; i++) {
             const li = document.createElement('li');
-            li.classList.add('page-item');
-            if (i === currentPage) li.classList.add('active');
-
-            const a = document.createElement('a');
-            a.classList.add('page-link');
-            a.href = '#';
-            a.innerText = i;
-
-            a.addEventListener('click', (e) => {
+            li.className = `page-item ${i === currentPage ? 'active' : ''}`;
+            li.innerHTML = `<a class="page-link" href="#">${i}</a>`;
+            li.addEventListener('click', (e) => {
                   e.preventDefault();
                   currentPage = i;
                   renderTable(lookups, currentPage);
-                  setupPagination(lookups);
+                  // Update active state
+                  document.querySelectorAll('.page-item').forEach(item => item.classList.remove('active'));
+                  li.classList.add('active');
             });
-
-            li.appendChild(a);
             paginationElement.appendChild(li);
       }
 }
@@ -206,7 +218,7 @@ document.getElementById('lookup-form').addEventListener('submit', async function
             loadLookups();
       } catch (error) {
             console.error("Error saving lookup:", error);
-            showToast("Error saving lookup", "error");
+            showToast("Error saving lookup", "danger");
       }
 });
 

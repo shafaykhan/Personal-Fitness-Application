@@ -63,7 +63,7 @@ async function deleteDietRecord(id) {
             loadDietRecords();
         } catch (error) {
             console.error(`Error deleting diet record ${id}:`, error);
-            showToast("Error deleting record", "error");
+            showToast("Error deleting record", "danger");
         }
     }
 }
@@ -74,6 +74,7 @@ function renderTable(records, page) {
 
     if (!records || records.length === 0) {
         tableBody.innerHTML = '<tr><td colspan="9" class="text-center">No diet records found</td></tr>';
+        document.getElementById('page-info').innerText = '0 of 0';
         return;
     }
 
@@ -83,6 +84,7 @@ function renderTable(records, page) {
 
     paginatedRecords.forEach(record => {
         const row = document.createElement('tr');
+        row.classList.add('align-left');
         const statusBadge = record.status === 'ACTIVE' ? '<span class="badge text-bg-success">ACTIVE</span>' : `<span class="badge text-bg-danger">${record.status}</span>`;
         row.innerHTML = `
             <td>${record.foodName}</td>
@@ -94,13 +96,35 @@ function renderTable(records, page) {
             <td>${new Date(record.recordDateTime).toLocaleString()}</td>
             <td>${statusBadge}</td>
             <td>
-                <button class="btn btn-sm btn-primary" onclick="editDietRecord(${record.id})"><i class="bi bi-pencil"></i></button>
-                <button class="btn btn-sm btn-info" onclick="viewDietRecord(${record.id})"><i class="bi bi-eye"></i></button>
-                <button class="btn btn-sm btn-danger" onclick="deleteDietRecord(${record.id})"><i class="bi bi-trash"></i></button>
+                <div class="d-flex justify-content-center gap-2">
+                    <button class="btn btn-sm btn-light border text-primary rounded-circle"
+                            style="width:36px; height:36px;"
+                            onclick="viewDietRecord(${record.id})"
+                            title="View">
+                        <i class="bi bi-eye"></i>
+                    </button>
+                    <button class="btn btn-sm btn-light border text-secondary rounded-circle"
+                            style="width:36px; height:36px;"
+                            onclick="editDietRecord(${record.id})"
+                            title="Edit">
+                        <i class="bi bi-pencil"></i>
+                    </button>
+                    <button class="btn btn-sm btn-light border text-danger rounded-circle"
+                            style="width:36px; height:36px;"
+                            onclick="deleteDietRecord(${record.id})"
+                            title="Delete">
+                        <i class="bi bi-trash"></i>
+                    </button>
+                </div>
             </td>
         `;
         tableBody.appendChild(row);
     });
+
+    const totalRecords = records.length;
+    const startRange = start + 1;
+    const endRange = Math.min(end, totalRecords);
+    document.getElementById('page-info').innerText = `${startRange}-${endRange} of ${totalRecords}`;
 }
 
 function setupPagination(records) {
@@ -117,6 +141,9 @@ function setupPagination(records) {
             e.preventDefault();
             currentPage = i;
             renderTable(records, currentPage);
+            // Update active state
+            document.querySelectorAll('.page-item').forEach(item => item.classList.remove('active'));
+            li.classList.add('active');
         });
         paginationElement.appendChild(li);
     }
@@ -231,7 +258,7 @@ document.getElementById('diet-record-form').addEventListener('submit', async fun
         loadDietRecords();
     } catch (error) {
         console.error('Error saving diet record:', error);
-        showToast('Error saving diet record', 'error');
+        showToast('Error saving diet record', 'danger');
     }
 });
 

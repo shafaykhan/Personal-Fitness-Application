@@ -42,7 +42,7 @@ async function loadLookupData() {
             populateDropdown('goal-type', data.GOAL_TYPE || []);
       } catch (error) {
             console.error("Error loading lookup data:", error);
-            showToast('Error loading selection options.', 'error');
+            showToast('Error loading selection options.', 'danger');
       }
 }
 
@@ -74,7 +74,7 @@ async function loadUserPreference() {
                   showToast("Welcome! Please set your preferences.", "info");
             } else {
                   console.error("Error loading user preferences:", error);
-                  showToast("Could not load your preferences.", "error");
+                  showToast("Could not load your preferences.", "danger");
             }
       }
 }
@@ -110,7 +110,7 @@ async function saveUserPreference() {
             showToast("Preferences saved successfully!", "success");
       } catch (error) {
             console.error("Error saving user preference:", error);
-            showToast("Failed to save preferences. Please try again.", "error");
+            showToast("Failed to save preferences. Please try again.", "danger");
       }
 }
 

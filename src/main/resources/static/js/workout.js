@@ -63,7 +63,7 @@ async function deleteWorkout(id) {
             loadWorkouts();
         } catch (error) {
             console.error(`Error deleting workout ${id}:`, error);
-            showToast("Error deleting workout", "error");
+            showToast("Error deleting workout", "danger");
         }
     }
 }
@@ -73,7 +73,8 @@ function renderTable(workouts, page) {
     tableBody.innerHTML = '';
 
     if (!workouts || workouts.length === 0) {
-        tableBody.innerHTML = '<tr><td colspan="7" class="text-center">No workouts found</td></tr>';
+        tableBody.innerHTML = '<tr><td colspan="8" class="text-center">No workouts found</td></tr>';
+        document.getElementById('page-info').innerText = '0 of 0';
         return;
     }
 
@@ -83,6 +84,7 @@ function renderTable(workouts, page) {
 
     paginatedWorkouts.forEach(workout => {
         const row = document.createElement('tr');
+        row.classList.add('align-left');
         const statusBadge = workout.status === 'ACTIVE' ? '<span class="badge text-bg-success">ACTIVE</span>' : `<span class="badge text-bg-danger">${workout.status}</span>`;
         row.innerHTML = `
             <td>${workout.exerciseName}</td>
@@ -93,13 +95,35 @@ function renderTable(workouts, page) {
             <td>${new Date(workout.recordDateTime).toLocaleString()}</td>
             <td>${statusBadge}</td>
             <td>
-                <button class="btn btn-sm btn-primary" onclick="editWorkout(${workout.id})"><i class="bi bi-pencil"></i></button>
-                <button class="btn btn-sm btn-info" onclick="viewWorkout(${workout.id})"><i class="bi bi-eye"></i></button>
-                <button class="btn btn-sm btn-danger" onclick="deleteWorkout(${workout.id})"><i class="bi bi-trash"></i></button>
+                <div class="d-flex justify-content-center gap-2">
+                    <button class="btn btn-sm btn-light border text-primary rounded-circle"
+                            style="width:36px; height:36px;"
+                            onclick="viewWorkout(${workout.id})"
+                            title="View">
+                        <i class="bi bi-eye"></i>
+                    </button>
+                    <button class="btn btn-sm btn-light border text-secondary rounded-circle"
+                            style="width:36px; height:36px;"
+                            onclick="editWorkout(${workout.id})"
+                            title="Edit">
+                        <i class="bi bi-pencil"></i>
+                    </button>
+                    <button class="btn btn-sm btn-light border text-danger rounded-circle"
+                            style="width:36px; height:36px;"
+                            onclick="deleteWorkout(${workout.id})"
+                            title="Delete">
+                        <i class="bi bi-trash"></i>
+                    </button>
+                </div>
             </td>
         `;
         tableBody.appendChild(row);
     });
+
+    const totalWorkouts = workouts.length;
+    const startRange = start + 1;
+    const endRange = Math.min(end, totalWorkouts);
+    document.getElementById('page-info').innerText = `${startRange}-${endRange} of ${totalWorkouts}`;
 }
 
 function setupPagination(workouts) {
@@ -116,6 +140,9 @@ function setupPagination(workouts) {
             e.preventDefault();
             currentPage = i;
             renderTable(workouts, currentPage);
+            // Update active state
+            document.querySelectorAll('.page-item').forEach(item => item.classList.remove('active'));
+            li.classList.add('active');
         });
         paginationElement.appendChild(li);
     }
@@ -239,7 +266,7 @@ document.getElementById('workout-form').addEventListener('submit', async functio
         loadWorkouts();
     } catch (error) {
         console.error('Error saving workout:', error);
-        showToast('Error saving workout', 'error');
+        showToast('Error saving workout', 'danger');
     }
 });
 

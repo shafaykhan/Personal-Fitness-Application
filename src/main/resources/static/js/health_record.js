@@ -51,7 +51,7 @@ async function deleteHealthRecord(id) {
             await loadHealthRecords();
         } catch (error) {
             console.error(`Error deleting health record ${id}:`, error);
-            showToast("Error deleting record", "error");
+            showToast("Error deleting record", "danger");
         }
     }
 }
@@ -62,6 +62,7 @@ function renderTable(records, page) {
 
     if (records.length === 0) {
         tableBody.innerHTML = '<tr><td colspan="9" class="text-center">No health records found</td></tr>';
+        document.getElementById('page-info').innerText = '0 of 0';
         return;
     }
 
@@ -71,6 +72,7 @@ function renderTable(records, page) {
 
     paginatedRecords.forEach(record => {
         const row = document.createElement('tr');
+        row.classList.add('align-left');
         const statusBadge = record.status === 'ACTIVE' ? '<span class="badge text-bg-success">ACTIVE</span>' : `<span class="badge text-bg-danger">${record.status}</span>`;
         row.innerHTML = `
             <td>${record.weight || 'N/A'}</td>
@@ -82,20 +84,43 @@ function renderTable(records, page) {
             <td>${new Date(record.recordDateTime).toLocaleString()}</td>
             <td>${statusBadge}</td>
             <td>
-                <button class="btn btn-sm btn-primary" onclick="editHealthRecord(${record.id})"><i class="bi bi-pencil"></i></button>
-                <button class="btn btn-sm btn-info" onclick="viewHealthRecord(${record.id})"><i class="bi bi-eye"></i></button>
-                <button class="btn btn-sm btn-danger" onclick="deleteHealthRecord(${record.id})"><i class="bi bi-trash"></i></button>
+                <div class="d-flex justify-content-center gap-2">
+                    <button class="btn btn-sm btn-light border text-primary rounded-circle"
+                            style="width:36px; height:36px;"
+                            onclick="viewHealthRecord(${record.id})"
+                            title="View">
+                        <i class="bi bi-eye"></i>
+                    </button>
+                    <button class="btn btn-sm btn-light border text-secondary rounded-circle"
+                            style="width:36px; height:36px;"
+                            onclick="editHealthRecord(${record.id})"
+                            title="Edit">
+                        <i class="bi bi-pencil"></i>
+                    </button>
+                    <button class="btn btn-sm btn-light border text-danger rounded-circle"
+                            style="width:36px; height:36px;"
+                            onclick="deleteHealthRecord(${record.id})"
+                            title="Delete">
+                        <i class="bi bi-trash"></i>
+                    </button>
+                </div>
             </td>
         `;
         tableBody.appendChild(row);
     });
+
+    const totalRecords = records.length;
+    const startRange = start + 1;
+    const endRange = Math.min(end, totalRecords);
+    document.getElementById('page-info').innerText = `${startRange}-${endRange} of ${totalRecords}`;
 }
 
 function setupPagination(records) {
     const paginationElement = document.getElementById('pagination');
     paginationElement.innerHTML = '';
-    const pageCount = Math.ceil(records.length / rowsPerPage);
+    if (!records || records.length === 0) return;
 
+    const pageCount = Math.ceil(records.length / rowsPerPage);
     for (let i = 1; i <= pageCount; i++) {
         const li = document.createElement('li');
         li.className = `page-item ${i === currentPage ? 'active' : ''}`;
@@ -104,6 +129,9 @@ function setupPagination(records) {
             e.preventDefault();
             currentPage = i;
             renderTable(records, currentPage);
+            // Update active state
+            document.querySelectorAll('.page-item').forEach(item => item.classList.remove('active'));
+            li.classList.add('active');
         });
         paginationElement.appendChild(li);
     }
@@ -187,7 +215,7 @@ document.getElementById('health-record-form').addEventListener('submit', async f
         loadHealthRecords();
     } catch (error) {
         console.error('Error saving health record:', error);
-        showToast('Error saving health record', 'error');
+        showToast('Error saving health record', 'danger');
     }
 });
 

@@ -6,7 +6,60 @@ VALUES (1, 'Khan Shafay', 'Khan', '$2a$12$aCyk/dRN15hL8iTIYD.fFuW277nNBExygEYtgR
         'ACTIVE'),
       (2, 'John Doe', 'User', '$2a$12$aCyk/dRN15hL8iTIYD.fFuW277nNBExygEYtgRLAs4Wdo1NirOasO',
         'johndoe@example.com', '9876543210', '1995-08-20', 'MALE', 'USER',
-        'ACTIVE');
+        'ACTIVE'),
+       (3, 'Michael Smith', 'michael', '$2a$12$aCyk/dRN15hL8iTIYD.fFuW277nNBExygEYtgRLAs4Wdo1NirOasO',
+        'michael.smith@gmail.com', '9000000001', '1994-02-14', 'MALE', 'USER', 'ACTIVE'),
+
+       (4, 'Emily Johnson', 'emily', '$2a$12$aCyk/dRN15hL8iTIYD.fFuW277nNBExygEYtgRLAs4Wdo1NirOasO',
+        'emily.johnson@gmail.com', '9000000002', '1996-07-21', 'FEMALE', 'USER', 'ACTIVE'),
+
+       (5, 'Daniel Williams', 'daniel', '$2a$12$aCyk/dRN15hL8iTIYD.fFuW277nNBExygEYtgRLAs4Wdo1NirOasO',
+        'daniel.williams@gmail.com', '9000000003', '1993-11-30', 'MALE', 'USER', 'ACTIVE'),
+
+       (6, 'Sophia Brown', 'sophia', '$2a$12$aCyk/dRN15hL8iTIYD.fFuW277nNBExygEYtgRLAs4Wdo1NirOasO',
+        'sophia.brown@gmail.com', '9000000004', '1998-01-18', 'FEMALE', 'USER', 'ACTIVE'),
+
+       (7, 'James Jones', 'james', '$2a$12$aCyk/dRN15hL8iTIYD.fFuW277nNBExygEYtgRLAs4Wdo1NirOasO',
+        'james.jones@gmail.com', '9000000005', '1995-09-05', 'MALE', 'USER', 'ACTIVE'),
+
+       (8, 'Olivia Garcia', 'olivia', '$2a$12$aCyk/dRN15hL8iTIYD.fFuW277nNBExygEYtgRLAs4Wdo1NirOasO',
+        'olivia.garcia@gmail.com', '9000000006', '1997-03-12', 'FEMALE', 'USER', 'ACTIVE'),
+
+       (9, 'William Miller', 'william', '$2a$12$aCyk/dRN15hL8iTIYD.fFuW277nNBExygEYtgRLAs4Wdo1NirOasO',
+        'william.miller@gmail.com', '9000000007', '1992-12-25', 'MALE', 'USER', 'ACTIVE'),
+
+       (10, 'Ava Davis', 'ava', '$2a$12$aCyk/dRN15hL8iTIYD.fFuW277nNBExygEYtgRLAs4Wdo1NirOasO',
+        'ava.davis@gmail.com', '9000000008', '1999-04-09', 'FEMALE', 'USER', 'ACTIVE'),
+
+       (11, 'Benjamin Wilson', 'benjamin', '$2a$12$aCyk/dRN15hL8iTIYD.fFuW277nNBExygEYtgRLAs4Wdo1NirOasO',
+        'benjamin.wilson@gmail.com', '9000000009', '1991-08-15', 'MALE', 'USER', 'ACTIVE'),
+
+       (12, 'Charlotte Moore', 'charlotte', '$2a$12$aCyk/dRN15hL8iTIYD.fFuW277nNBExygEYtgRLAs4Wdo1NirOasO',
+        'charlotte.moore@gmail.com', '9000000010', '1996-06-06', 'FEMALE', 'USER', 'ACTIVE'),
+
+       (13, 'Lucas Taylor', 'lucas', '$2a$12$aCyk/dRN15hL8iTIYD.fFuW277nNBExygEYtgRLAs4Wdo1NirOasO',
+        'lucas.taylor@gmail.com', '9000000011', '1994-10-22', 'MALE', 'USER', 'ACTIVE'),
+
+       (14, 'Amelia Anderson', 'amelia', '$2a$12$aCyk/dRN15hL8iTIYD.fFuW277nNBExygEYtgRLAs4Wdo1NirOasO',
+        'amelia.anderson@gmail.com', '9000000012', '1997-02-02', 'FEMALE', 'USER', 'ACTIVE'),
+
+       (15, 'Henry Thomas', 'henry', '$2a$12$aCyk/dRN15hL8iTIYD.fFuW277nNBExygEYtgRLAs4Wdo1NirOasO',
+        'henry.thomas@gmail.com', '9000000013', '1993-05-17', 'MALE', 'USER', 'ACTIVE'),
+
+       (16, 'Mia Jackson', 'mia', '$2a$12$aCyk/dRN15hL8iTIYD.fFuW277nNBExygEYtgRLAs4Wdo1NirOasO',
+        'mia.jackson@gmail.com', '9000000014', '1998-09-29', 'FEMALE', 'USER', 'ACTIVE'),
+
+       (17, 'Alexander White', 'alexander', '$2a$12$aCyk/dRN15hL8iTIYD.fFuW277nNBExygEYtgRLAs4Wdo1NirOasO',
+        'alexander.white@gmail.com', '9000000015', '1995-01-11', 'MALE', 'USER', 'ACTIVE'),
+
+       (18, 'Isabella Harris', 'isabella', '$2a$12$aCyk/dRN15hL8iTIYD.fFuW277nNBExygEYtgRLAs4Wdo1NirOasO',
+        'isabella.harris@gmail.com', '9000000016', '1997-07-07', 'FEMALE', 'USER', 'ACTIVE'),
+
+       (19, 'Matthew Martin', 'matthew', '$2a$12$aCyk/dRN15hL8iTIYD.fFuW277nNBExygEYtgRLAs4Wdo1NirOasO',
+        'matthew.martin@gmail.com', '9000000017', '1992-03-03', 'MALE', 'USER', 'ACTIVE'),
+
+       (20, 'Harper Thompson', 'harper', '$2a$12$aCyk/dRN15hL8iTIYD.fFuW277nNBExygEYtgRLAs4Wdo1NirOasO',
+        'harper.thompson@gmail.com', '9000000018', '1999-12-19', 'FEMALE', 'USER', 'ACTIVE');
 
 -- HEIGHT UNITS
 INSERT INTO lookup (group_key, value)
