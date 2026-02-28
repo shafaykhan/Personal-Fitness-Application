@@ -47,11 +47,11 @@ async function deleteHealthRecord(id) {
     if (confirm("Are you sure you want to delete this record?")) {
         try {
             await apiDelete(`/fitness-app/api/health-records/${id}`);
-            showToast("Record deleted successfully", "success");
+            showToast("Record deleted successfully!", "success");
             await loadHealthRecords();
         } catch (error) {
             console.error(`Error deleting health record ${id}:`, error);
-            showToast("Error deleting record", "danger");
+            showToast("Error deleting record!", "danger");
         }
     }
 }
@@ -87,15 +87,16 @@ function renderTable(records, page) {
                 <div class="d-flex justify-content-center gap-2">
                     <button class="btn btn-sm btn-light border text-primary rounded-circle"
                             style="width:36px; height:36px;"
-                            onclick="viewHealthRecord(${record.id})"
-                            title="View">
-                        <i class="bi bi-eye"></i>
+                            onclick="editHealthRecord(${record.id})"
+                            title="Edit">
+                            
+                        <i class="bi bi-pencil"></i>
                     </button>
                     <button class="btn btn-sm btn-light border text-secondary rounded-circle"
                             style="width:36px; height:36px;"
-                            onclick="editHealthRecord(${record.id})"
-                            title="Edit">
-                        <i class="bi bi-pencil"></i>
+                            onclick="viewHealthRecord(${record.id})"
+                            title="View">
+                        <i class="bi bi-eye"></i>
                     </button>
                     <button class="btn btn-sm btn-light border text-danger rounded-circle"
                             style="width:36px; height:36px;"
@@ -167,7 +168,17 @@ function populateForm(record, isReadOnly) {
     for (let i = 0; i < formElements.length; i++) {
         formElements[i].disabled = isReadOnly;
     }
-    document.querySelector('#health-record-form button[type="submit"]').style.display = isReadOnly ? 'none' : 'block';
+    
+    // Enable cancel button even in read-only mode
+    document.querySelectorAll('#health-record-form button[type="button"]').forEach(btn => btn.disabled = false);
+
+    const saveBtn = document.getElementById('save-btn');
+    saveBtn.style.display = isReadOnly ? 'none' : 'block';
+    if (!isReadOnly) {
+        saveBtn.disabled = false;
+        validateHealthRecordForm(); // Validate initially when editing
+    }
+    
     document.getElementById('form-title').innerText = isReadOnly ? 'View Health Record' : (record.id ? 'Edit Health Record' : 'Add Health Record');
 }
 
@@ -188,9 +199,28 @@ function showForm(isAdd = false) {
         for (let i = 0; i < formElements.length; i++) {
             formElements[i].disabled = false;
         }
-        document.querySelector('#health-record-form button[type="submit"]').style.display = 'block';
+        document.getElementById('save-btn').style.display = 'block';
+        validateHealthRecordForm(); // Validate initially when adding
     }
 }
+
+function validateHealthRecordForm() {
+    const recordDateTime = document.getElementById('recordDateTime').value;
+    const status = document.getElementById('status').value;
+
+    const isValid = recordDateTime && status;
+    document.getElementById('save-btn').disabled = !isValid;
+}
+
+// Add event listeners for validation
+const formInputs = ['recordDateTime', 'status'];
+formInputs.forEach(id => {
+    const element = document.getElementById(id);
+    if (element) {
+        element.addEventListener('input', validateHealthRecordForm);
+        element.addEventListener('change', validateHealthRecordForm);
+    }
+});
 
 document.getElementById('health-record-form').addEventListener('submit', async function (event) {
     event.preventDefault();
@@ -210,12 +240,12 @@ document.getElementById('health-record-form').addEventListener('submit', async f
 
     try {
         await apiPost('/fitness-app/api/health-records', record);
-        showToast('Health record saved successfully', 'success');
+        showToast('Health record saved successfully!', 'success');
         showList();
         loadHealthRecords();
     } catch (error) {
         console.error('Error saving health record:', error);
-        showToast('Error saving health record', 'danger');
+        showToast('Error saving health record!', 'danger');
     }
 });
 

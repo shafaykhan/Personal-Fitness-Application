@@ -59,11 +59,11 @@ async function deleteDietRecord(id) {
     if (confirm("Are you sure you want to delete this record?")) {
         try {
             await apiDelete(`/fitness-app/api/diet-records/${id}`);
-            showToast("Record deleted successfully", "success");
+            showToast("Record deleted successfully!", "success");
             loadDietRecords();
         } catch (error) {
             console.error(`Error deleting diet record ${id}:`, error);
-            showToast("Error deleting record", "danger");
+            showToast("Error deleting record!", "danger");
         }
     }
 }
@@ -99,15 +99,16 @@ function renderTable(records, page) {
                 <div class="d-flex justify-content-center gap-2">
                     <button class="btn btn-sm btn-light border text-primary rounded-circle"
                             style="width:36px; height:36px;"
-                            onclick="viewDietRecord(${record.id})"
-                            title="View">
-                        <i class="bi bi-eye"></i>
+                            onclick="editDietRecord(${record.id})"
+                            title="Edit">
+                            
+                        <i class="bi bi-pencil"></i>
                     </button>
                     <button class="btn btn-sm btn-light border text-secondary rounded-circle"
                             style="width:36px; height:36px;"
-                            onclick="editDietRecord(${record.id})"
-                            title="Edit">
-                        <i class="bi bi-pencil"></i>
+                            onclick="viewDietRecord(${record.id})"
+                            title="View">
+                        <i class="bi bi-eye"></i>
                     </button>
                     <button class="btn btn-sm btn-light border text-danger rounded-circle"
                             style="width:36px; height:36px;"
@@ -185,7 +186,17 @@ function populateForm(record, isReadOnly) {
     for (let i = 0; i < formElements.length; i++) {
         formElements[i].disabled = isReadOnly;
     }
-    document.querySelector('#diet-record-form button[type="submit"]').style.display = isReadOnly ? 'none' : 'block';
+    
+    // Enable cancel button even in read-only mode
+    document.querySelectorAll('#diet-record-form button[type="button"]').forEach(btn => btn.disabled = false);
+
+    const saveBtn = document.getElementById('save-btn');
+    saveBtn.style.display = isReadOnly ? 'none' : 'block';
+    if (!isReadOnly) {
+        saveBtn.disabled = false;
+        validateDietRecordForm(); // Validate initially when editing
+    }
+    
     document.getElementById('form-title').innerText = isReadOnly ? 'View Diet Record' : (record.id ? 'Edit Diet Record' : 'Add Diet Record');
 }
 
@@ -206,9 +217,30 @@ function showForm(isAdd = false) {
         for (let i = 0; i < formElements.length; i++) {
             formElements[i].disabled = false;
         }
-        document.querySelector('#diet-record-form button[type="submit"]').style.display = 'block';
+        document.getElementById('save-btn').style.display = 'block';
+        validateDietRecordForm(); // Validate initially when adding
     }
 }
+
+function validateDietRecordForm() {
+    const foodName = document.getElementById('foodName').value.trim();
+    const mealTypeId = document.getElementById('mealTypeId').value;
+    const recordDateTime = document.getElementById('recordDateTime').value;
+    const status = document.getElementById('status').value;
+
+    const isValid = foodName && mealTypeId && recordDateTime && status;
+    document.getElementById('save-btn').disabled = !isValid;
+}
+
+// Add event listeners for validation
+const formInputs = ['foodName', 'mealTypeId', 'recordDateTime', 'status'];
+formInputs.forEach(id => {
+    const element = document.getElementById(id);
+    if (element) {
+        element.addEventListener('input', validateDietRecordForm);
+        element.addEventListener('change', validateDietRecordForm);
+    }
+});
 
 async function loadLookupData() {
     try {
@@ -258,7 +290,7 @@ document.getElementById('diet-record-form').addEventListener('submit', async fun
         loadDietRecords();
     } catch (error) {
         console.error('Error saving diet record:', error);
-        showToast('Error saving diet record', 'danger');
+        showToast('Error saving diet record!', 'danger');
     }
 });
 

@@ -59,11 +59,11 @@ async function deleteWorkout(id) {
     if (confirm("Are you sure you want to delete this workout?")) {
         try {
             await apiDelete(`/fitness-app/api/workouts/${id}`);
-            showToast("Workout deleted successfully", "success");
+            showToast("Workout deleted successfully!", "success");
             loadWorkouts();
         } catch (error) {
             console.error(`Error deleting workout ${id}:`, error);
-            showToast("Error deleting workout", "danger");
+            showToast("Error deleting workout!", "danger");
         }
     }
 }
@@ -98,15 +98,16 @@ function renderTable(workouts, page) {
                 <div class="d-flex justify-content-center gap-2">
                     <button class="btn btn-sm btn-light border text-primary rounded-circle"
                             style="width:36px; height:36px;"
-                            onclick="viewWorkout(${workout.id})"
-                            title="View">
-                        <i class="bi bi-eye"></i>
+                            onclick="editWorkout(${workout.id})"
+                            title="Edit">
+                            
+                        <i class="bi bi-pencil"></i>
                     </button>
                     <button class="btn btn-sm btn-light border text-secondary rounded-circle"
                             style="width:36px; height:36px;"
-                            onclick="editWorkout(${workout.id})"
-                            title="Edit">
-                        <i class="bi bi-pencil"></i>
+                            onclick="viewWorkout(${workout.id})"
+                            title="View">
+                        <i class="bi bi-eye"></i>
                     </button>
                     <button class="btn btn-sm btn-light border text-danger rounded-circle"
                             style="width:36px; height:36px;"
@@ -190,7 +191,17 @@ function populateForm(workout, isReadOnly) {
     for (let i = 0; i < formElements.length; i++) {
         formElements[i].disabled = isReadOnly;
     }
-    document.querySelector('#workout-form button[type="submit"]').style.display = isReadOnly ? 'none' : 'block';
+    
+    // Enable cancel button even in read-only mode
+    document.querySelectorAll('#workout-form button[type="button"]').forEach(btn => btn.disabled = false);
+
+    const saveBtn = document.getElementById('save-btn');
+    saveBtn.style.display = isReadOnly ? 'none' : 'block';
+    if (!isReadOnly) {
+        saveBtn.disabled = false;
+        validateWorkoutForm(); // Validate initially when editing
+    }
+    
     document.getElementById('form-title').innerText = isReadOnly ? 'View Workout' : (workout.id ? 'Edit Workout' : 'Add Workout');
 }
 
@@ -211,9 +222,33 @@ function showForm(isAdd = false) {
         for (let i = 0; i < formElements.length; i++) {
             formElements[i].disabled = false;
         }
-        document.querySelector('#workout-form button[type="submit"]').style.display = 'block';
+        document.getElementById('save-btn').style.display = 'block';
+        validateWorkoutForm(); // Validate initially when adding
     }
 }
+
+function validateWorkoutForm() {
+    const exerciseName = document.getElementById('exerciseName').value.trim();
+    const typeId = document.getElementById('typeId').value;
+    const duration = document.getElementById('duration').value;
+    const durationUomId = document.getElementById('durationUomId').value;
+    const intensityId = document.getElementById('intensityId').value;
+    const recordDateTime = document.getElementById('recordDateTime').value;
+    const status = document.getElementById('status').value;
+
+    const isValid = exerciseName && typeId && duration && durationUomId && intensityId && recordDateTime && status;
+    document.getElementById('save-btn').disabled = !isValid;
+}
+
+// Add event listeners for validation
+const formInputs = ['exerciseName', 'typeId', 'duration', 'durationUomId', 'intensityId', 'recordDateTime', 'status'];
+formInputs.forEach(id => {
+    const element = document.getElementById(id);
+    if (element) {
+        element.addEventListener('input', validateWorkoutForm);
+        element.addEventListener('change', validateWorkoutForm);
+    }
+});
 
 async function loadLookupData() {
     try {
@@ -261,12 +296,12 @@ document.getElementById('workout-form').addEventListener('submit', async functio
 
     try {
         await apiPost('/fitness-app/api/workouts', workout);
-        showToast('Workout saved successfully', 'success');
+        showToast('Workout saved successfully!', 'success');
         showList();
         loadWorkouts();
     } catch (error) {
         console.error('Error saving workout:', error);
-        showToast('Error saving workout', 'danger');
+        showToast('Error saving workout!', 'danger');
     }
 });
 

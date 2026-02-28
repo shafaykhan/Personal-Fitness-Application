@@ -1,6 +1,5 @@
 <!doctype html>
 <html lang="en" xmlns="http://www.w3.org/1999/html">
-<!--begin::Head-->
 <head>
       <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
       <title>Personal Fitness Application | Lookup</title>
@@ -10,6 +9,7 @@
       <meta name="theme-color" content="#1a1a1a" media="(prefers-color-scheme: dark)"/>
       <meta name="title" content="Personal Fitness Application | Lookup"/>
       <meta name="supported-color-schemes" content="light dark"/>
+
       <link rel="preload" href="../css/adminlte.css" as="style"/>
       <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/source-sans-3@5.0.12/index.css"
             integrity="sha256-tXJfXfp6Ewt1ilPzLDtQnJV4hclT9XuaZUKyUvmyr+Q=" crossorigin="anonymous" media="print"/>
@@ -126,17 +126,17 @@
                                           <input type="hidden" id="lookupId">
                                           <div class="row">
                                                 <div class="col-md-6 mb-3">
-                                                      <label for="groupKey" class="form-label">Group Key</label>
-                                                      <input type="text" class="form-control" id="groupKey" required>
+                                                      <label for="groupKey" class="form-label">Group Key <span class="text-danger">*</span></label>
+                                                      <input type="text" class="form-control" id="groupKey">
                                                 </div>
                                                 <div class="col-md-6 mb-3">
-                                                      <label for="value" class="form-label">Value</label>
-                                                      <input type="text" class="form-control" id="value" required>
+                                                      <label for="value" class="form-label">Value <span class="text-danger">*</span></label>
+                                                      <input type="text" class="form-control" id="value">
                                                 </div>
                                           </div>
                                           <div class="row">
                                                 <div class="col-md-6 mb-3">
-                                                      <label for="status" class="form-label">Status</label>
+                                                      <label for="status" class="form-label">Status <span class="text-danger">*</span></label>
                                                       <select class="form-select" id="status">
                                                             <option value="ACTIVE">ACTIVE</option>
                                                             <option value="INACTIVE">INACTIVE</option>
@@ -148,7 +148,7 @@
                                                         onclick="showList()"><i class="bi bi-x-circle me-1"></i>Cancel
                                                 </button>
                                                 <button type="submit" class="btn btn-primary px-4 rounded-pill shadow-sm"
-                                                        id="save-btn"><i class="bi bi-check-circle me-1"></i>Save
+                                                        id="save-btn" disabled><i class="bi bi-check-circle me-1"></i>Save
                                                 </button>
                                           </div>
                                     </form>

@@ -123,28 +123,26 @@
                                           <input type="hidden" id="workoutId">
                                           <div class="row">
                                                 <div class="col-md-6 mb-3">
-                                                      <label for="exerciseName" class="form-label">Exercise Name</label>
-                                                      <input type="text" class="form-control" id="exerciseName"
-                                                             required>
+                                                      <label for="exerciseName" class="form-label">Exercise Name <span class="text-danger">*</span></label>
+                                                      <input type="text" class="form-control" id="exerciseName">
                                                 </div>
                                                 <div class="col-md-6 mb-3">
-                                                      <label for="typeId" class="form-label">Type</label>
-                                                      <select class="form-select" id="typeId" required></select>
+                                                      <label for="typeId" class="form-label">Type <span class="text-danger">*</span></label>
+                                                      <select class="form-select" id="typeId"></select>
                                                 </div>
                                           </div>
                                           <div class="row">
                                                 <div class="col-md-6 mb-3">
-                                                      <label for="duration" class="form-label">Duration</label>
+                                                      <label for="duration" class="form-label">Duration <span class="text-danger">*</span></label>
                                                       <div class="input-group">
-                                                            <input type="number" class="form-control" id="duration"
-                                                                   required>
+                                                            <input type="number" class="form-control" id="duration">
                                                             <select class="form-select" id="durationUomId"
-                                                                    style="max-width: 100px;"></select>
+                                                                    style="max-width: 150px;"></select>
                                                       </div>
                                                 </div>
                                                 <div class="col-md-6 mb-3">
-                                                      <label for="intensityId" class="form-label">Intensity</label>
-                                                      <select class="form-select" id="intensityId" required></select>
+                                                      <label for="intensityId" class="form-label">Intensity <span class="text-danger">*</span></label>
+                                                      <select class="form-select" id="intensityId"></select>
                                                 </div>
                                           </div>
                                           <div class="row">
@@ -154,15 +152,15 @@
                                                       <input type="number" class="form-control" id="caloriesBurned">
                                                 </div>
                                                 <div class="col-md-6 mb-3">
-                                                      <label for="recordDateTime" class="form-label">Date</label>
+                                                      <label for="recordDateTime" class="form-label">Record Date Time <span class="text-danger">*</span></label>
                                                       <input type="datetime-local" class="form-control"
-                                                             id="recordDateTime" required>
+                                                             id="recordDateTime">
                                                 </div>
                                           </div>
                                           <div class="row">
                                                 <div class="col-md-6 mb-3">
-                                                      <label for="status" class="form-label">Status</label>
-                                                      <select class="form-select" id="status" required>
+                                                      <label for="status" class="form-label">Status <span class="text-danger">*</span></label>
+                                                      <select class="form-select" id="status">
                                                             <option value="ACTIVE">ACTIVE</option>
                                                             <option value="INACTIVE">INACTIVE</option>
                                                       </select>
@@ -177,7 +175,7 @@
                                                         onclick="showList()"><i class="bi bi-x-circle me-1"></i>Cancel
                                                 </button>
                                                 <button type="submit" class="btn btn-primary px-4 rounded-pill shadow-sm"
-                                                        id="save-btn"><i class="bi bi-check-circle me-1"></i>Save
+                                                        id="save-btn" disabled><i class="bi bi-check-circle me-1"></i>Save
                                                 </button>
                                           </div>
                                     </form>

@@ -124,12 +124,12 @@
                                           <input type="hidden" id="userId">
                                           <div class="row">
                                                 <div class="col-md-6 mb-3">
-                                                      <label for="foodName" class="form-label">Food Name</label>
-                                                      <input type="text" class="form-control" id="foodName" required>
+                                                      <label for="foodName" class="form-label">Food Name <span class="text-danger">*</span></label>
+                                                      <input type="text" class="form-control" id="foodName">
                                                 </div>
                                                 <div class="col-md-6 mb-3">
-                                                      <label for="mealTypeId" class="form-label">Meal Type</label>
-                                                      <select class="form-select" id="mealTypeId" required></select>
+                                                      <label for="mealTypeId" class="form-label">Meal Type <span class="text-danger">*</span></label>
+                                                      <select class="form-select" id="mealTypeId"></select>
                                                 </div>
                                           </div>
                                           <div class="row">
@@ -154,13 +154,13 @@
                                           </div>
                                           <div class="row">
                                                 <div class="col-md-6 mb-3">
-                                                      <label for="recordDateTime" class="form-label">Date</label>
+                                                      <label for="recordDateTime" class="form-label">Record Date Time <span class="text-danger">*</span></label>
                                                       <input type="datetime-local" class="form-control"
-                                                             id="recordDateTime" required>
+                                                             id="recordDateTime">
                                                 </div>
                                                 <div class="col-md-6 mb-3">
-                                                      <label for="status" class="form-label">Status</label>
-                                                      <select class="form-select" id="status" required>
+                                                      <label for="status" class="form-label">Status <span class="text-danger">*</span></label>
+                                                      <select class="form-select" id="status">
                                                             <option value="ACTIVE">ACTIVE</option>
                                                             <option value="INACTIVE">INACTIVE</option>
                                                       </select>
@@ -171,7 +171,7 @@
                                                         onclick="showList()"><i class="bi bi-x-circle me-1"></i>Cancel
                                                 </button>
                                                 <button type="submit" class="btn btn-primary px-4 rounded-pill shadow-sm"
-                                                        id="save-btn"><i class="bi bi-check-circle me-1"></i>Save
+                                                        id="save-btn" disabled><i class="bi bi-check-circle me-1"></i>Save
                                                 </button>
                                           </div>
                                     </form>

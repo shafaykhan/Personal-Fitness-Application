@@ -22,7 +22,7 @@ async function loadUsers() {
         setupSearch();
     } catch (error) {
         console.error("Error loading users:", error);
-        showToast("Error loading users.", "danger");
+        showToast("Error loading users!", "danger");
     }
 }
 
@@ -114,15 +114,16 @@ function renderTable(users, page) {
                 <div class="d-flex justify-content-center gap-2">
                     <button class="btn btn-sm btn-light border text-primary rounded-circle"
                             style="width:36px; height:36px;"
-                            onclick="viewUser(${user.id})"
-                            title="View">
-                        <i class="bi bi-eye"></i>
+                            onclick="editUser(${user.id})"
+                            title="Edit">
+                            
+                        <i class="bi bi-pencil"></i>
                     </button>
                     <button class="btn btn-sm btn-light border text-secondary rounded-circle"
                             style="width:36px; height:36px;"
-                            onclick="editUser(${user.id})"
-                            title="Edit">
-                        <i class="bi bi-pencil"></i>
+                            onclick="viewUser(${user.id})"
+                            title="View">
+                        <i class="bi bi-eye"></i>
                     </button>
                 </div>
             </td>
@@ -207,7 +208,10 @@ function populateForm(user, isReadOnly) {
     
     const saveBtn = document.getElementById('save-btn');
     saveBtn.style.display = isReadOnly ? 'none' : 'block';
-    if (!isReadOnly) saveBtn.disabled = false;
+    if (!isReadOnly) {
+        saveBtn.disabled = false;
+        validateUserForm(); // Validate initially when editing
+    }
     
     document.getElementById('form-title').innerText = isReadOnly ? 'View User' : 'Edit User';
 }
@@ -244,8 +248,36 @@ function showForm(isAdd = false) {
             formElements[i].disabled = false;
         }
         document.getElementById('save-btn').style.display = 'block';
+        validateUserForm(); // Validate initially when adding
     }
 }
+
+function validateUserForm() {
+    const name = document.getElementById('name').value.trim();
+    const username = document.getElementById('username').value.trim();
+    const password = document.getElementById('password').value.trim();
+    const contactNo = document.getElementById('contactNo').value.trim();
+    const email = document.getElementById('email').value.trim();
+    const dateOfBirth = document.getElementById('dateOfBirth').value;
+    const gender = document.getElementById('gender').value;
+    
+    // Check if editing (userId exists) to make password optional if not changed
+    const userId = document.getElementById('userId').value;
+    const isPasswordValid = userId ? true : !!password; // If editing, password can be empty (unchanged)
+
+    const isValid = name && username && isPasswordValid && contactNo && email && dateOfBirth && gender;
+    document.getElementById('save-btn').disabled = !isValid;
+}
+
+// Add event listeners for validation
+const formInputs = ['name', 'username', 'password', 'contactNo', 'email', 'dateOfBirth', 'gender'];
+formInputs.forEach(id => {
+    const element = document.getElementById(id);
+    if (element) {
+        element.addEventListener('input', validateUserForm);
+        element.addEventListener('change', validateUserForm);
+    }
+});
 
 document.getElementById('user-form').addEventListener('submit', async function (event) {
     event.preventDefault();
@@ -269,7 +301,7 @@ document.getElementById('user-form').addEventListener('submit', async function (
 
     try {
         await (userId ? updateUser(user) : saveUser(user));
-        showToast(`User ${userId ? 'updated' : 'added'} successfully`, 'success');
+        showToast(`User ${userId ? 'updated' : 'added'} successfully!`, 'success');
         
         const loggedInUser = getUserDetails();
         if (loggedInUser && loggedInUser.id.toString() === userId) {
@@ -280,7 +312,7 @@ document.getElementById('user-form').addEventListener('submit', async function (
         }
     } catch (error) {
         console.error('Error saving user:', error);
-        showToast('Error saving user', 'danger');
+        showToast('Error saving user!', 'danger');
     }
 });
 

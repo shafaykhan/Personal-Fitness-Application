@@ -60,11 +60,11 @@ async function deleteGoal(id) {
     if (confirm("Are you sure you want to delete this goal?")) {
         try {
             await apiDelete(`/fitness-app/api/goals/${id}`);
-            showToast("Goal deleted successfully", "success");
+            showToast("Goal deleted successfully!", "success");
             loadGoals();
         } catch (error) {
             console.error(`Error deleting goal ${id}:`, error);
-            showToast("Error deleting goal", "danger");
+            showToast("Error deleting goal!", "danger");
         }
     }
 }
@@ -100,15 +100,16 @@ function renderTable(goals, page) {
                 <div class="d-flex justify-content-center gap-2">
                     <button class="btn btn-sm btn-light border text-primary rounded-circle"
                             style="width:36px; height:36px;"
-                            onclick="viewGoal(${goal.id})"
-                            title="View">
-                        <i class="bi bi-eye"></i>
+                            onclick="editGoal(${goal.id})"
+                            title="Edit">
+                            
+                        <i class="bi bi-pencil"></i>
                     </button>
                     <button class="btn btn-sm btn-light border text-secondary rounded-circle"
                             style="width:36px; height:36px;"
-                            onclick="editGoal(${goal.id})"
-                            title="Edit">
-                        <i class="bi bi-pencil"></i>
+                            onclick="viewGoal(${goal.id})"
+                            title="View">
+                        <i class="bi bi-eye"></i>
                     </button>
                     <button class="btn btn-sm btn-light border text-danger rounded-circle"
                             style="width:36px; height:36px;"
@@ -185,10 +186,18 @@ function populateForm(goal, isReadOnly) {
     for (let i = 0; i < formElements.length; i++) {
         formElements[i].disabled = isReadOnly;
     }
-    document.querySelector('#goal-form button[type="submit"]').style.display = isReadOnly ? 'none' : 'block';
-    document.getElementById('form-title').innerText = isReadOnly ? 'View Goal' : (goal.id ? 'Edit Goal' : 'Add Goal');
+    
+    // Enable cancel button even in read-only mode
+    document.querySelectorAll('#goal-form button[type="button"]').forEach(btn => btn.disabled = false);
 
-    validateGoalForm(); // Initial validation check
+    const saveBtn = document.getElementById('save-btn');
+    saveBtn.style.display = isReadOnly ? 'none' : 'block';
+    if (!isReadOnly) {
+        saveBtn.disabled = false;
+        validateGoalForm(); // Validate initially when editing
+    }
+    
+    document.getElementById('form-title').innerText = isReadOnly ? 'View Goal' : (goal.id ? 'Edit Goal' : 'Add Goal');
 }
 
 function showList() {
@@ -208,10 +217,32 @@ function showForm(isAdd = false) {
         for (let i = 0; i < formElements.length; i++) {
             formElements[i].disabled = false;
         }
-        document.querySelector('#goal-form button[type="submit"]').style.display = 'block';
+        document.getElementById('save-btn').style.display = 'block';
+        validateGoalForm(); // Validate initially when adding
     }
-    validateGoalForm(); // Initial validation check when showing form
 }
+
+function validateGoalForm() {
+    const typeId = document.getElementById('typeId').value;
+    const targetValue = document.getElementById('targetValue').value;
+    const currentValue = document.getElementById('currentValue').value;
+    const startDate = document.getElementById('startDate').value;
+    const recordDateTime = document.getElementById('recordDateTime').value;
+    const status = document.getElementById('status').value;
+
+    const isValid = typeId && targetValue && currentValue && startDate && recordDateTime && status;
+    document.getElementById('save-btn').disabled = !isValid;
+}
+
+// Add event listeners for validation
+const formInputs = ['typeId', 'targetValue', 'currentValue', 'startDate', 'recordDateTime', 'status'];
+formInputs.forEach(id => {
+    const element = document.getElementById(id);
+    if (element) {
+        element.addEventListener('input', validateGoalForm);
+        element.addEventListener('change', validateGoalForm);
+    }
+});
 
 async function loadLookupData() {
     try {
@@ -239,30 +270,8 @@ function populateSelect(selectId, items) {
     }
 }
 
-function validateGoalForm() {
-    const typeId = document.getElementById('typeId').value;
-    const targetValue = document.getElementById('targetValue').value;
-    const currentValue = document.getElementById('currentValue').value;
-    const startDate = document.getElementById('startDate').value;
-    const recordDateTime = document.getElementById('recordDateTime').value;
-    const status = document.getElementById('status').value; // Status always has a value
-
-    const isValid = typeId && targetValue && currentValue && startDate && recordDateTime && status;
-    document.getElementById('save-btn').disabled = !isValid;
-    return isValid;
-}
-
-document.getElementById('goal-form').addEventListener('input', validateGoalForm);
-document.getElementById('goal-form').addEventListener('change', validateGoalForm);
-
-
 document.getElementById('goal-form').addEventListener('submit', async function (event) {
     event.preventDefault();
-    if (!validateGoalForm()) {
-        showToast("Please fill in all required fields.", "warning");
-        return;
-    }
-
     const user = getUserDetails();
     const goal = {
         id: document.getElementById('goalId').value || null,
@@ -279,7 +288,7 @@ document.getElementById('goal-form').addEventListener('submit', async function (
 
     try {
         await apiPost('/fitness-app/api/goals', goal);
-        showToast('Goal saved successfully', 'success');
+        showToast('Goal saved successfully!', 'success');
         showList();
         loadGoals();
     } catch (error) {

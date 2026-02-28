@@ -12,6 +12,7 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -63,7 +64,7 @@ public class UserService {
     if (!user.getEmail().equals(payloadDTO.getEmail()))
       isEmailExists(payloadDTO.getId(), payloadDTO.getEmail());
 
-    if (payloadDTO.getPassword() != null && payloadDTO.getPassword().length() < 60) {
+    if (StringUtils.hasText(payloadDTO.getPassword()) && payloadDTO.getPassword().length() < 60) {
       payloadDTO.setPassword(passwordEncoder.encode(payloadDTO.getPassword()));
     } else {
       payloadDTO.setPassword(user.getPassword());

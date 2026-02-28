@@ -22,7 +22,7 @@ async function loadLookups() {
             setupSearch();
       } catch (error) {
             console.error("Error loading lookups:", error);
-            showToast("Error loading lookups.", "danger");
+            showToast("Error loading lookups!", "danger");
       }
 }
 
@@ -88,15 +88,16 @@ function renderTable(lookups, page) {
                 <div class="d-flex justify-content-center gap-2">
                     <button class="btn btn-sm btn-light border text-primary rounded-circle"
                             style="width:36px; height:36px;"
-                            onclick="viewLookup(${lookup.id})"
-                            title="View">
-                        <i class="bi bi-eye"></i>
+                            onclick="editLookup(${lookup.id})"
+                            title="Edit">
+                            
+                        <i class="bi bi-pencil"></i>
                     </button>
                     <button class="btn btn-sm btn-light border text-secondary rounded-circle"
                             style="width:36px; height:36px;"
-                            onclick="editLookup(${lookup.id})"
-                            title="Edit">
-                        <i class="bi bi-pencil"></i>
+                            onclick="viewLookup(${lookup.id})"
+                            title="View">
+                        <i class="bi bi-eye"></i>
                     </button>
                 </div>
             </td>
@@ -168,6 +169,7 @@ function populateForm(lookup, isReadOnly) {
       } else {
             saveBtn.style.display = 'block';
             saveBtn.disabled = false;
+            validateLookupForm(); // Validate initially when editing
             document.getElementById('form-title').innerText = 'Edit Lookup';
       }
 }
@@ -197,8 +199,28 @@ function showForm(isAdd = false) {
                   formElements[i].disabled = false;
             }
             saveBtn.style.display = 'block';
+            validateLookupForm(); // Validate initially when adding
       }
 }
+
+function validateLookupForm() {
+      const groupKey = document.getElementById('groupKey').value.trim();
+      const value = document.getElementById('value').value.trim();
+      const status = document.getElementById('status').value;
+
+      const isValid = groupKey && value && status;
+      document.getElementById('save-btn').disabled = !isValid;
+}
+
+// Add event listeners for validation
+const formInputs = ['groupKey', 'value', 'status'];
+formInputs.forEach(id => {
+      const element = document.getElementById(id);
+      if (element) {
+            element.addEventListener('input', validateLookupForm);
+            element.addEventListener('change', validateLookupForm);
+      }
+});
 
 document.getElementById('lookup-form').addEventListener('submit', async function (event) {
       event.preventDefault();
@@ -213,12 +235,12 @@ document.getElementById('lookup-form').addEventListener('submit', async function
 
       try {
             await updateLookup(lookup);
-            showToast('Lookup updated successfully', 'success');
+            showToast('Lookup updated successfully!', 'success');
             showList();
             loadLookups();
       } catch (error) {
             console.error("Error saving lookup:", error);
-            showToast("Error saving lookup", "danger");
+            showToast("Error saving lookup!", "danger");
       }
 });
 

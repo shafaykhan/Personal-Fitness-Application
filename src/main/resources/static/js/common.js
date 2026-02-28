@@ -163,10 +163,16 @@ function showToast(message, type = 'success') {
           'text-bg-info'
       );
 
+      const config = {
+            success: { title: 'Success', icon: 'bi-check-circle-fill' },
+            danger: { title: 'Error', icon: 'bi-x-circle-fill' },
+            warning: { title: 'Warning', icon: 'bi-exclamation-triangle-fill' },
+            info: { title: 'Information', icon: 'bi-info-circle-fill' }
+      };
+
       // Set content
       toastBody.textContent = message;
-      toastTitle.textContent =
-          type.charAt(0).toUpperCase() + type.slice(1);
+      toastTitle.textContent = config[type].title;
 
       // Add new class
       toastElement.classList.add(`text-bg-${type}`);
