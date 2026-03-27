@@ -1,4 +1,4 @@
-const API_BASE_URL = "http://localhost:9000/fitness-app";
+const API_BASE_URL = "/fitness-app";
 
 const usernameInput = document.getElementById("username");
 const passwordInput = document.getElementById("password");
