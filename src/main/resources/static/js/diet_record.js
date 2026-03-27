@@ -20,7 +20,7 @@ function ensureOption(selectId, value, text) {
 
 async function loadDietRecords() {
     try {
-        allDietRecords = await apiGet(`/fitness-app/api/diet-records/by-user/`+ getUserId());
+        allDietRecords = await apiGet(`/api/diet-records/by-user/`+ getUserId());
         renderTable(allDietRecords, currentPage);
         setupPagination(allDietRecords);
         setupSearch();
@@ -32,7 +32,7 @@ async function loadDietRecords() {
 
 async function fetchDietRecord(id) {
     try {
-        return await apiGet(`/fitness-app/api/diet-records/${id}`);
+        return await apiGet(`/api/diet-records/${id}`);
     } catch (error) {
         console.error(`Error fetching diet record ${id}:`, error);
         return null;
@@ -58,7 +58,7 @@ async function viewDietRecord(id) {
 async function deleteDietRecord(id) {
     if (confirm("Are you sure you want to delete this record?")) {
         try {
-            await apiDelete(`/fitness-app/api/diet-records/${id}`);
+            await apiDelete(`/api/diet-records/${id}`);
             showToast("Record deleted successfully!", "success");
             loadDietRecords();
         } catch (error) {
@@ -244,7 +244,7 @@ formInputs.forEach(id => {
 
 async function loadLookupData() {
     try {
-        const data = await apiGet("/fitness-app/api/lookups/by-status-active?groupKeys=MEAL_TYPE");
+        const data = await apiGet("/api/lookups/by-status-active?groupKeys=MEAL_TYPE");
         if (!data) return;
 
         populateSelect('mealTypeId', data.MEAL_TYPE || []);
@@ -284,7 +284,7 @@ document.getElementById('diet-record-form').addEventListener('submit', async fun
     };
 
     try {
-        await apiPost('/fitness-app/api/diet-records', record);
+        await apiPost('/api/diet-records', record);
         showToast('Diet record saved successfully', 'success');
         showList();
         loadDietRecords();

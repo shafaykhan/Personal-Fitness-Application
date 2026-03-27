@@ -9,7 +9,7 @@ const rowsPerPage = 10;
 async function loadHealthRecords() {
     try {
         const user = getUserDetails();
-        allHealthRecords = await apiGet(`/fitness-app/api/health-records/by-user/${user.id}`);
+        allHealthRecords = await apiGet(`/api/health-records/by-user/${user.id}`);
         renderTable(allHealthRecords, currentPage);
         setupPagination(allHealthRecords);
         setupSearch();
@@ -20,7 +20,7 @@ async function loadHealthRecords() {
 
 async function fetchHealthRecord(id) {
     try {
-        return await apiGet(`/fitness-app/api/health-records/${id}`);
+        return await apiGet(`/api/health-records/${id}`);
     } catch (error) {
         console.error(`Error fetching health record ${id}:`, error);
         return null;
@@ -46,7 +46,7 @@ async function viewHealthRecord(id) {
 async function deleteHealthRecord(id) {
     if (confirm("Are you sure you want to delete this record?")) {
         try {
-            await apiDelete(`/fitness-app/api/health-records/${id}`);
+            await apiDelete(`/api/health-records/${id}`);
             showToast("Record deleted successfully!", "success");
             await loadHealthRecords();
         } catch (error) {
@@ -239,7 +239,7 @@ document.getElementById('health-record-form').addEventListener('submit', async f
     };
 
     try {
-        await apiPost('/fitness-app/api/health-records', record);
+        await apiPost('/api/health-records', record);
         showToast('Health record saved successfully!', 'success');
         showList();
         loadHealthRecords();

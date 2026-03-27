@@ -36,7 +36,7 @@ async function loadInitialData() {
 
 async function loadLookupData() {
       try {
-            const data = await apiGet("/fitness-app/api/lookups/by-status-active?groupKeys=DIET_TYPE~WORKOUT_INTENSITY~GOAL_TYPE");
+            const data = await apiGet("/api/lookups/by-status-active?groupKeys=DIET_TYPE~WORKOUT_INTENSITY~GOAL_TYPE");
             populateDropdown('diet-type', data.DIET_TYPE || []);
             populateDropdown('workout-intensity', data.WORKOUT_INTENSITY || []);
             populateDropdown('goal-type', data.GOAL_TYPE || []);
@@ -65,7 +65,7 @@ function populateDropdown(selectId, items) {
 
 async function loadUserPreference() {
       try {
-            const data = await apiGet("/fitness-app/api/user-preferences/by-user/" + getUserId());
+            const data = await apiGet("/api/user-preferences/by-user/" + getUserId());
             if (data) {
                   populateForm(data);
             }
@@ -106,7 +106,7 @@ async function saveUserPreference() {
       };
 
       try {
-            await apiPost("/fitness-app/api/user-preferences", payload);
+            await apiPost("/api/user-preferences", payload);
             showToast("Preferences saved successfully!", "success");
       } catch (error) {
             console.error("Error saving user preference:", error);

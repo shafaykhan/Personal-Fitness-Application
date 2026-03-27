@@ -20,7 +20,7 @@ function ensureOption(selectId, value, text) {
 
 async function loadWorkouts() {
     try {
-        allWorkouts = await apiGet("/fitness-app/api/workouts/by-user/" + getUserId());
+        allWorkouts = await apiGet("/api/workouts/by-user/" + getUserId());
         renderTable(allWorkouts, currentPage);
         setupPagination(allWorkouts);
         setupSearch();
@@ -32,7 +32,7 @@ async function loadWorkouts() {
 
 async function fetchWorkout(id) {
     try {
-        return await apiGet(`/fitness-app/api/workouts/${id}`);
+        return await apiGet(`/api/workouts/${id}`);
     } catch (error) {
         console.error(`Error fetching workout ${id}:`, error);
         return null;
@@ -58,7 +58,7 @@ async function viewWorkout(id) {
 async function deleteWorkout(id) {
     if (confirm("Are you sure you want to delete this workout?")) {
         try {
-            await apiDelete(`/fitness-app/api/workouts/${id}`);
+            await apiDelete(`/api/workouts/${id}`);
             showToast("Workout deleted successfully!", "success");
             loadWorkouts();
         } catch (error) {
@@ -252,7 +252,7 @@ formInputs.forEach(id => {
 
 async function loadLookupData() {
     try {
-        const data = await apiGet("/fitness-app/api/lookups/by-status-active?groupKeys=WORKOUT_TYPE~DURATION_UOM~WORKOUT_INTENSITY");
+        const data = await apiGet("/api/lookups/by-status-active?groupKeys=WORKOUT_TYPE~DURATION_UOM~WORKOUT_INTENSITY");
         if (!data) return;
 
         populateSelect('typeId', data.WORKOUT_TYPE || []);
@@ -295,7 +295,7 @@ document.getElementById('workout-form').addEventListener('submit', async functio
     };
 
     try {
-        await apiPost('/fitness-app/api/workouts', workout);
+        await apiPost('/api/workouts', workout);
         showToast('Workout saved successfully!', 'success');
         showList();
         loadWorkouts();

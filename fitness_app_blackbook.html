@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Fitness App Project Report</title>
+    <style>
+        body {
+            font-family: "Times New Roman", Times, serif;
+            line-height: 1.6;
+            margin: 1in;
+            color: #000;
+        }
+        h1, h2, h3 {
+            color: #000;
+            text-align: center;
+            text-transform: uppercase;
+        }
+        h1 { font-size: 24pt; margin-bottom: 20pt; }
+        h2 { font-size: 18pt; margin-top: 30pt; border-bottom: 2px solid #000; padding-bottom: 5pt; }
+        h3 { font-size: 14pt; text-align: left; margin-top: 20pt; }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20pt 0;
+        }
+        th, td {
+            border: 1px solid #000;
+            padding: 8pt;
+            text-align: left;
+        }
+        th { background-color: #f2f2f2; }
+        .center { text-align: center; }
+        .page-break { page-break-after: always; }
+        .title-page { text-align: center; height: 90vh; display: flex; flex-direction: column; justify-content: center; }
+    </style>
+</head>
+<body>
+
+<div class="title-page">
+    <h1>RESEARCH REPORT ON PERSONAL FITNESS APPLICATION</h1>
+    <p><strong>Radhai Mahavidyalaya, Chhatrapati Sambhajinagar</strong><br>
+    ISO Certified and U.G.C. 2(f) 12(B) Recognized<br>
+    NAAC Accredited with 'B' Grade</p>
+    
+    <div style="margin-top: 100pt;">
+        <p>Research Report on</p>
+        <h2>"PERSONAL FITNESS APPLICATION"</h2>
+        <p>In Partial fulfillment of Master of Computer Science<br>Year 2024-25</p>
+    </div>
+
+    <div style="margin-top: 100pt;">
+        <p>Submitted by<br><strong>[Your Full Name]</strong><br>M.Sc. (CS) III-Sem</p>
+        <p>Teacher Co-Ordinator<br><strong>Kanchan R. Darbe</strong></p>
+    </div>
+</div>
+<div class="page-break"></div>
+
+<h2>CERTIFICATE</h2>
+<p>This is to certify that <strong>[Your Full Name]</strong> of M.Sc(CS) III-Semester, has successfully completed his/her <strong>Research Report</strong> on <strong>"PERSONAL FITNESS APPLICATION"</strong>. And has submitted a satisfactory report as per the requirement of <strong>Dr. Babasaheb Ambedkar Marathwada University, Aurangabad</strong> in partial fulfillment of Master of Computer Science courses.</p>
+<p class="center"><strong>For the academic year 2024-2025</strong></p>
+<table>
+    <tr>
+        <th>Name of Teacher</th>
+        <th>Dr. N.S. Sonawane</th>
+        <th>Dr. S.S. Lomte</th>
+    </tr>
+    <tr>
+        <td class="center">Kanchan R. Darbe</td>
+        <td class="center">HOD</td>
+        <td class="center">Principal</td>
+    </tr>
+</table>
+<div class="page-break"></div>
+
+<h2>ACKNOWLEDGMENT</h2>
+<p>On the very outset of this report, I would like to extend my sincere & heartfelt obligation towards all the personages who have helped me in this endeavor. Without their active guidance, help, cooperation & encouragement, I would not have made headway in the project.</p>
+<p>I am grateful to my project Guide <strong>Asst. Prof. Kanchan R. Darbe</strong> for the guidance, inspiration and constructive suggestions that helped me in the preparation of this project.</p>
+<p>I express my thanks to the director of <strong>Radhai Mahavidyalaya</strong> for extending his support.</p>
+<p>I also acknowledge with a deep sense of reverence, my gratitude towards my parents and member of my family, who has always supported me morally as well as economically. At last, but not least gratitude goes to all of my friends who directly or indirectly helped me to complete this project report.</p>
+<p><strong>Thanking You</strong><br><strong>[Your Full Name]</strong></p>
+<div class="page-break"></div>
+
+<h2>DECLARATION</h2>
+<p>I hereby declare that this Project report of <strong>"PERSONAL FITNESS APPLICATION"</strong> submitted to <strong>Radhai Mahavidyalaya, Chhatrapati Sambhajinagar</strong> for the partial fulfillment of Bachelor of Computer Science course under the guidance of <strong>Asst. Prof. Kanchan R. Darbe</strong>. The information and data given in the report is authentic to the best of my knowledge.</p>
+<p>This research report is not submitted to any other university or institution for the award of any degree, diploma or fellowship or published any time before.</p>
+<p><strong>Name of Student:</strong> [Your Full Name]</p>
+<div class="page-break"></div>
+
+<h2>CHAPTER 1: INTRODUCTION</h2>
+<h3>1.1 Introduction to the Project</h3>
+<p>The rapid advancement of digital technology has transformed almost every aspect of human life, including health and fitness. In the post-pandemic world, individuals have become increasingly aware of the importance of maintaining a healthy lifestyle. The <strong>Personal Fitness Application</strong> is a specialized web platform designed to bridge the gap between busy schedules and fitness goals.</p>
+
+<h3>1.2 Motivation and Need of the System</h3>
+<p>The primary motivation behind this project is the observation that while many people start fitness routines with high enthusiasm, a significant percentage drop out due to a lack of visible progress or an organized tracking mechanism.</p>
+<ul>
+    <li><strong>Information Silos</strong>: Most users use separate tools for diet, steps, and weight tracking.</li>
+    <li><strong>Lack of Accountability</strong>: Without a historical record, users find it difficult to stay motivated.</li>
+    <li><strong>Data Security</strong>: Our system prioritizes private hosting and token-based security.</li>
+</ul>
+
+<h3>1.3 Objectives of the Project</h3>
+<ol>
+    <li><strong>Centralization</strong>: Provide a single source of truth for all fitness data.</li>
+    <li><strong>Security</strong>: Implement JWT-based stateless authentication.</li>
+    <li><strong>Visualization</strong>: Develop a dynamic dashboard with progress bars.</li>
+    <li><strong>Usability</strong>: Create an intuitive interface using AdminLTE.</li>
+</ol>
+
+<h3>1.4 Scope of the Project</h3>
+<p>The scope includes user registration, secure login, dashboard insights, and full CRUD operations for Workouts, Diet, and Health vitals. It ensures accessibility via desktop and mobile browsers.</p>
+<div class="page-break"></div>
+
+<h2>CHAPTER 2: LITERATURE REVIEW</h2>
+<h3>2.1 Existing Systems</h3>
+<p>Current solutions range from manual notebooks to cluttered commercial apps like MyFitnessPal. Manual logs lack calculation, while commercial apps often sell user data or require expensive subscriptions.</p>
+
+<h3>2.2 Proposed System</h3>
+<p>The proposed system focuses on <strong>Simplicity and Security</strong>. By using <strong>Spring Security</strong>, we ensure that data is private. The UI is designed to provide a professional "Executive Dashboard" feel.</p>
+<div class="page-break"></div>
+
+<h2>CHAPTER 3: SYSTEM ANALYSIS</h2>
+<h3>3.1 Software Requirements</h3>
+<ul>
+    <li>Backend: Spring Boot 3.x</li>
+    <li>Database: MySQL 8.0</li>
+    <li>Frontend: HTML5, JavaScript, Bootstrap 5</li>
+    <li>UI Theme: AdminLTE</li>
+</ul>
+
+<h3>3.2 Functional Requirements</h3>
+<ul>
+    <li>Identity Module: Login/Registration via JWT.</li>
+    <li>Workout Module: Logging duration, type, and calories.</li>
+    <li>Goal Module: Target setting and progress bars.</li>
+</ul>
+<div class="page-break"></div>
+
+<h2>CHAPTER 4: SYSTEM DESIGN</h2>
+<h3>4.1 System Architecture</h3>
+<p>The application follows an <strong>N-Tier Architecture</strong> consisting of the Client Layer, API Layer (REST Controllers), Business Logic Layer (Services), and Persistence Layer (JPA/MySQL).</p>
+
+<h3>4.2 Security Architecture (JWT)</h3>
+<p>The system uses stateless authentication where a token is issued upon login and stored in the browser's localStorage. This token is sent in the header of every subsequent API request.</p>
+<div class="page-break"></div>
+
+<h2>CHAPTER 5: IMPLEMENTATION</h2>
+<p>Implementation involved developing Spring Boot RESTful services and a dynamic frontend. The <strong>api.js</strong> utility was created to handle global context paths and token injection seamlessly across all modules.</p>
+<div class="page-break"></div>
+
+<h2>CHAPTER 6: TESTING</h2>
+<table>
+    <tr>
+        <th>ID</th>
+        <th>Scenario</th>
+        <th>Expected Result</th>
+        <th>Status</th>
+    </tr>
+    <tr>
+        <td>1</td>
+        <td>Valid Login</td>
+        <td>Redirect to Dashboard</td>
+        <td>PASS</td>
+    </tr>
+    <tr>
+        <td>2</td>
+        <td>Unauthorized Access</td>
+        <td>Redirect to Login</td>
+        <td>PASS</td>
+    </tr>
+    <tr>
+        <td>3</td>
+        <td>Goal Calculation</td>
+        <td>Correct Progress %</td>
+        <td>PASS</td>
+    </tr>
+</table>
+<div class="page-break"></div>
+
+<h2>CHAPTER 7: CONCLUSION & FUTURE SCOPE</h2>
+<p>The Personal Fitness Application successfully provides a secure and efficient way to track fitness progress. Future improvements include PWA support for offline access and AI-based personalized meal recommendations.</p>
+
+<h2>REFERENCES</h2>
+<ol>
+    <li>Spring Boot in Action by Craig Walls.</li>
+    <li>MDN Web Docs - JavaScript & Fetch API.</li>
+    <li>Bootstrap Framework Documentation.</li>
+</ol>
+
+</body>
+</html>

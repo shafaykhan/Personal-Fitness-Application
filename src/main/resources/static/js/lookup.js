@@ -16,7 +16,7 @@ async function loadLookups() {
       }
 
       try {
-            allLookups = await apiGet('/fitness-app/api/lookups');
+            allLookups = await apiGet('/api/lookups');
             renderTable(allLookups, currentPage);
             setupPagination(allLookups);
             setupSearch();
@@ -28,7 +28,7 @@ async function loadLookups() {
 
 async function fetchLookup(id) {
       try {
-            return await apiGet(`/fitness-app/api/lookups/${id}`);
+            return await apiGet(`/api/lookups/${id}`);
       } catch (error) {
             console.error(`Error fetching lookup ${id}:`, error);
             return null;
@@ -52,7 +52,7 @@ async function viewLookup(id) {
 }
 
 function updateLookup(lookup) {
-      return apiPost('/fitness-app/api/lookups', lookup);
+      return apiPost('/api/lookups', lookup);
 }
 
 function renderTable(lookups, page) {

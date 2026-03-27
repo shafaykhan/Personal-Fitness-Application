@@ -24,14 +24,17 @@ function apiDelete(url) {
     });
 }
 
+const CONTEXT_PATH = "/fitness-app";
+
 async function apiRequest(url, options = {}) {
+    const finalUrl = url.startsWith('http') ? url : CONTEXT_PATH + url;
     try {
         const defaultHeaders = {
             'Content-Type': 'application/json',
             'Authorization': 'Bearer ' + getToken()
         };
 
-        const response = await fetch(url, {
+        const response = await fetch(finalUrl, {
             ...options,
             headers: {
                 ...defaultHeaders,

@@ -21,7 +21,7 @@ function ensureOption(selectId, value, text) {
 async function loadGoals() {
     try {
         const user = getUserDetails();
-        allGoals = await apiGet(`/fitness-app/api/goals/by-user/${user.id}`);
+        allGoals = await apiGet(`/api/goals/by-user/${user.id}`);
         renderTable(allGoals, currentPage);
         setupPagination(allGoals);
         setupSearch();
@@ -33,7 +33,7 @@ async function loadGoals() {
 
 async function fetchGoal(id) {
     try {
-        return await apiGet(`/fitness-app/api/goals/${id}`);
+        return await apiGet(`/api/goals/${id}`);
     } catch (error) {
         console.error(`Error fetching goal ${id}:`, error);
         return null;
@@ -59,7 +59,7 @@ async function viewGoal(id) {
 async function deleteGoal(id) {
     if (confirm("Are you sure you want to delete this goal?")) {
         try {
-            await apiDelete(`/fitness-app/api/goals/${id}`);
+            await apiDelete(`/api/goals/${id}`);
             showToast("Goal deleted successfully!", "success");
             loadGoals();
         } catch (error) {
@@ -246,7 +246,7 @@ formInputs.forEach(id => {
 
 async function loadLookupData() {
     try {
-        const data = await apiGet("/fitness-app/api/lookups/by-status-active?groupKeys=GOAL_TYPE");
+        const data = await apiGet("/api/lookups/by-status-active?groupKeys=GOAL_TYPE");
         if (!data) return;
 
         populateSelect('typeId', data.GOAL_TYPE || []);
@@ -287,7 +287,7 @@ document.getElementById('goal-form').addEventListener('submit', async function (
     };
 
     try {
-        await apiPost('/fitness-app/api/goals', goal);
+        await apiPost('/api/goals', goal);
         showToast('Goal saved successfully!', 'success');
         showList();
         loadGoals();

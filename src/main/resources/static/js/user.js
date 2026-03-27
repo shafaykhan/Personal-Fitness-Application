@@ -16,7 +16,7 @@ async function loadUsers() {
     }
 
     try {
-        allUsers = await apiGet('/fitness-app/api/users');
+        allUsers = await apiGet('/api/users');
         renderTable(allUsers, currentPage);
         setupPagination(allUsers);
         setupSearch();
@@ -28,7 +28,7 @@ async function loadUsers() {
 
 async function loadLookups() {
     try {
-        const data = await apiGet('/fitness-app/api/lookups/by-status-active?groupKeys=HEIGHT_UOM~WEIGHT_UOM');
+        const data = await apiGet('/api/lookups/by-status-active?groupKeys=HEIGHT_UOM~WEIGHT_UOM');
         if (!data) return;
         populateSelect('heightUomId', data.HEIGHT_UOM || []);
         populateSelect('weightUomId', data.WEIGHT_UOM || []);
@@ -39,7 +39,7 @@ async function loadLookups() {
 
 async function fetchUser(id) {
     try {
-        return await apiGet(`/fitness-app/api/users/${id}`);
+        return await apiGet(`/api/users/${id}`);
     } catch (error) {
         console.error(`Error fetching user ${id}:`, error);
         return null;
@@ -63,11 +63,11 @@ async function viewUser(id) {
 }
 
 function saveUser(user) {
-    return apiPost('/fitness-app/api/users/register', user);
+    return apiPost('/api/users/register', user);
 }
 
 function updateUser(user) {
-    return apiPut('/fitness-app/api/users', user);
+    return apiPut('/api/users', user);
 }
 
 function populateSelect(elementId, items) {
